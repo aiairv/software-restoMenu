@@ -29,6 +29,6 @@ public class Order {
     @JoinColumn(name = "topping_id")
     private List<Topping> toppings;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "consumer_id")
     private Consumer consumer;
 }

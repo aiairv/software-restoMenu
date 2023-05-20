@@ -20,7 +20,7 @@ import java.util.List;
         @Column(nullable = false)
         private String name;
         @Column(nullable = false)
-        private String Description;
+        private String description;
         @Column(nullable = false)
         private BigDecimal price;
         @Column(nullable = false)
@@ -37,7 +37,7 @@ import java.util.List;
             inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
     private List <Ingredient> ingredients;
         @ManyToMany(cascade = CascadeType.ALL)
-        @JoinTable(name = "topping", joinColumns = @JoinColumn(name = "dish_id"),
+        @JoinTable(name = "dish_toppings", joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "topping_id"))
     private List <Topping> toppings;
 }
