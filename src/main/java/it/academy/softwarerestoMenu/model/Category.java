@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -18,7 +18,12 @@ public class Category {
     private Long id;
     private String name;
     private boolean isPublish;
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List <Dish> dishes;
+    LocalDateTime createDataTime = LocalDateTime.now();
+    LocalDateTime removeDateTime;
+    LocalDateTime updateDateTime = LocalDateTime.now();
 
+    public Category(String name, boolean isPublish) {
+        this.name = name;
+        this.isPublish = isPublish;
+    }
 }
