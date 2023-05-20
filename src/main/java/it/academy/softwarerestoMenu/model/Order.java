@@ -1,4 +1,4 @@
-package it.academy.softwarerestoMenu.entity;
+package it.academy.softwarerestoMenu.model;
 
 import it.academy.softwarerestoMenu.enums.OrderStatus;
 import jakarta.persistence.*;
@@ -30,5 +30,5 @@ public class Order {
     private List<Topping> toppings;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Consumer consumer;
 }

@@ -1,4 +1,4 @@
-package it.academy.softwarerestoMenu.entity;
+package it.academy.softwarerestoMenu.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,22 +11,14 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")
-public class User {
+@Table(name = "category")
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
-    private String email;
-
-    @Column(nullable = false)
-    private String phone;
-
-    @OneToMany()
-    private List<Order> orders;
+    private boolean isPublish;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List <Dish> dishes;
 
 }
