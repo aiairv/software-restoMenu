@@ -30,5 +30,5 @@ public class Order {
     private List<Topping> toppings;
     @ManyToOne
     @JoinColumn(name = "consumer_id")
-    private Consumer consumer;
+    private User user;
 }

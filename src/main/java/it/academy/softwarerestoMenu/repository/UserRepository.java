@@ -1,10 +1,10 @@
 package it.academy.softwarerestoMenu.repository;
 
-import it.academy.softwarerestoMenu.model.Consumer;
+import it.academy.softwarerestoMenu.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ConsumerRepository extends JpaRepository<Consumer, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
 }
