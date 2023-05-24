@@ -1,14 +1,10 @@
 package it.academy.softwarerestoMenu.repository;
 
-import it.academy.softwarerestoMenu.dto.CategoryDTO;
-import it.academy.softwarerestoMenu.model.Category;
-import it.academy.softwarerestoMenu.model.Dish;
+import it.academy.softwarerestoMenu.entity.Dish;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface DishRepository extends JpaRepository <Dish,Long>{

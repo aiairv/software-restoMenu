@@ -1,10 +1,8 @@
 package it.academy.softwarerestoMenu.controller;
 
-import it.academy.softwarerestoMenu.dto.CategoryDTO;
-import it.academy.softwarerestoMenu.dto.DishDTO;
 import it.academy.softwarerestoMenu.exceptions.DishNotFoundException;
-import it.academy.softwarerestoMenu.model.Category;
-import it.academy.softwarerestoMenu.model.Dish;
+import it.academy.softwarerestoMenu.entity.Category;
+import it.academy.softwarerestoMenu.entity.Dish;
 import it.academy.softwarerestoMenu.services.DishService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

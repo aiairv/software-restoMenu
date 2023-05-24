@@ -1,6 +1,6 @@
 package it.academy.softwarerestoMenu.controller;
 
-import it.academy.softwarerestoMenu.model.User;
+import it.academy.softwarerestoMenu.entity.User;
 import it.academy.softwarerestoMenu.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;

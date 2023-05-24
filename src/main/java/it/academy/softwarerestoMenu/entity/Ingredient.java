@@ -1,4 +1,4 @@
-package it.academy.softwarerestoMenu.model;
+package it.academy.softwarerestoMenu.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,24 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "category")
-public class Category {
+@Table(name = "ingredient")
+public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String name;
-    private boolean isPublish;
+    @ManyToMany(mappedBy = "ingredients")
+    private List<Dish> dishes;
     LocalDateTime createDataTime = LocalDateTime.now();
     LocalDateTime removeDateTime;
     LocalDateTime updateDateTime = LocalDateTime.now();
-
-    public Category(String name, boolean isPublish) {
-        this.name = name;
-        this.isPublish = isPublish;
-    }
 }

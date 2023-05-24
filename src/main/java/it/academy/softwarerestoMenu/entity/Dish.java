@@ -1,4 +1,4 @@
-package it.academy.softwarerestoMenu.model;
+package it.academy.softwarerestoMenu.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,21 +1,14 @@
 package it.academy.softwarerestoMenu.services;
 
 
-import it.academy.softwarerestoMenu.dto.DishDTO;
-import it.academy.softwarerestoMenu.exceptions.CategoryNotFoundException;
 import it.academy.softwarerestoMenu.exceptions.DishNotFoundException;
-import it.academy.softwarerestoMenu.model.Category;
-import it.academy.softwarerestoMenu.model.Dish;
-import it.academy.softwarerestoMenu.model.Ingredient;
-import it.academy.softwarerestoMenu.model.Topping;
+import it.academy.softwarerestoMenu.entity.Category;
+import it.academy.softwarerestoMenu.entity.Dish;
 import it.academy.softwarerestoMenu.repository.CategoryRepository;
 import it.academy.softwarerestoMenu.repository.DishRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

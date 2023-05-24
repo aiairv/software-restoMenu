@@ -2,7 +2,7 @@ package it.academy.softwarerestoMenu.services;
 
 
 import it.academy.softwarerestoMenu.exceptions.UserNotFoundException;
-import it.academy.softwarerestoMenu.model.User;
+import it.academy.softwarerestoMenu.entity.User;
 import it.academy.softwarerestoMenu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 

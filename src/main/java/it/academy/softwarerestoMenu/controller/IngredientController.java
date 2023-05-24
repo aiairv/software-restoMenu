@@ -1,9 +1,7 @@
 package it.academy.softwarerestoMenu.controller;
 
 import it.academy.softwarerestoMenu.exceptions.CategoryNotFoundException;
-import it.academy.softwarerestoMenu.model.Category;
-import it.academy.softwarerestoMenu.model.Ingredient;
-import it.academy.softwarerestoMenu.services.CategoryService;
+import it.academy.softwarerestoMenu.entity.Ingredient;
 import it.academy.softwarerestoMenu.services.IngredientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

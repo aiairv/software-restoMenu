@@ -1,8 +1,8 @@
 package it.academy.softwarerestoMenu.dto;
 
-import it.academy.softwarerestoMenu.model.Category;
-import it.academy.softwarerestoMenu.model.Ingredient;
-import it.academy.softwarerestoMenu.model.Topping;
+import it.academy.softwarerestoMenu.entity.Category;
+import it.academy.softwarerestoMenu.entity.Ingredient;
+import it.academy.softwarerestoMenu.entity.Topping;
 import lombok.*;
 
 
