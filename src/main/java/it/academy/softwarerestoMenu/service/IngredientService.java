@@ -3,11 +3,10 @@ package it.academy.softwarerestoMenu.service;
 import it.academy.softwarerestoMenu.dto.IngredientDto;
 import it.academy.softwarerestoMenu.entity.Ingredient;
 import it.academy.softwarerestoMenu.repository.IngredientRepository;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;

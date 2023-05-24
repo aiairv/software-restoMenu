@@ -11,26 +11,26 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/ingredient")
 public class IngredientController {
-    IngredientService ingredientService;
-    @GetMapping("/getIngredientById/{id}")
+    IngredientService iService;
+    @GetMapping("/getById/{id}")
     public IngredientDto getIngredientById(@PathVariable Long id){
-        return ingredientService.getIngredientById(id);
+        return iService.getIngredientById(id);
     }
-    @GetMapping("/getAllIngredients")
+    @GetMapping("/getAll")
     public List<IngredientDto> getAllIngredients(){
-        return ingredientService.getAllIngredients();
+        return iService.getAllIngredients();
     }
-    @PostMapping("/addNewIngredient")
+    @PostMapping("/add")
     public IngredientDto addNewIngredient(@RequestBody IngredientDto dto){
-        return ingredientService.addNewIngredient(dto);
+        return iService.addNewIngredient(dto);
     }
-    @PutMapping("/updateIngredient/{id}")
+    @PutMapping("/update/{id}")
     public IngredientDto updateIngredient(@PathVariable Long id,
                                           @RequestBody IngredientDto dto){
-        return ingredientService.updateIngredient(id, dto);
+        return iService.updateIngredient(id, dto);
     }
-    @DeleteMapping("/deleteIngredient/{id}")
+    @DeleteMapping("/delete/{id}")
     public String deleteIngredient(@PathVariable Long id){
-        return ingredientService.deleteIngredient(id);
+        return iService.deleteIngredient(id);
     }
 }

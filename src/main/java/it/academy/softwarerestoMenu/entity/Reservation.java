@@ -1,12 +1,13 @@
 package it.academy.softwarerestoMenu.entity;
 
 import it.academy.softwarerestoMenu.enums.Place;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import javax.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Data
@@ -19,11 +20,12 @@ public class Reservation {
     private Long id;
     @Enumerated(EnumType.STRING)
     private Place place;
-    private LocalDateTime reservationTime;
-    private LocalDateTime reservedTime;
+    private LocalDate reservationDate;
+    private LocalTime reservationTime;
     private boolean isAvailable;
-    @OneToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+
+//    @OneToOne
+//    @JoinColumn(name = "order_id")
+//    private Order order;
 
 }

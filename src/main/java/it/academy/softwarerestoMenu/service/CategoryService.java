@@ -2,10 +2,10 @@ package it.academy.softwarerestoMenu.service;
 
 import it.academy.softwarerestoMenu.entity.Category;
 import it.academy.softwarerestoMenu.repository.CategoryRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service

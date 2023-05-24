@@ -1,11 +1,10 @@
 package it.academy.softwarerestoMenu.entity;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -19,7 +18,8 @@ public class Ingredient {
     private Long id;
     @Column(nullable = false)
     private String name;
-    @ManyToMany(mappedBy = "ingredients")
-    private List<Dish> dishes;
+    //    @ManyToMany(mappedBy = "ingredients")
+    @ManyToMany
+    private List <Dish> dishes;
 
 }
