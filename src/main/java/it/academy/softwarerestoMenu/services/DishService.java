@@ -3,6 +3,7 @@ package it.academy.softwarerestoMenu.services;
 
 import it.academy.softwarerestoMenu.dto.DishDTO;
 import it.academy.softwarerestoMenu.exceptions.CategoryNotFoundException;
+import it.academy.softwarerestoMenu.exceptions.DishNotFoundException;
 import it.academy.softwarerestoMenu.model.Category;
 import it.academy.softwarerestoMenu.model.Dish;
 import it.academy.softwarerestoMenu.model.Ingredient;
@@ -32,29 +33,29 @@ public class  DishService {
     }
 
 
-    @Transactional
-    public DishDTO save(String name, String description, BigDecimal price, boolean special,
-                        boolean vegan, boolean publish, Category category,
-                        List<Ingredient> ingredients, List<Topping> toppings) throws Exception{
-        Dish dish = new Dish(name,description,price,special,vegan,publish,category,ingredients,toppings);
-        repository.save(dish);
-        return new DishDTO(
-                dish.getName(),
-                dish.getDescription(),
-                dish.getPrice(),
-                dish.isSpecial(),
-                dish.isVegan(),
-                dish.isPublish(),
-                dish.getCategory(),
-                dish.getIngredients(),
-                dish.getToppings()
-        );
-    }
+//    @Transactional
+//    public DishDTO save(String name, String description, BigDecimal price, boolean special,
+//                        boolean vegan, boolean publish, Category category,
+//                        List<Ingredient> ingredients, List<Topping> toppings) throws Exception{
+//        Dish dish = new Dish(name,description,price,special,vegan,publish,category,ingredients,toppings);
+//        repository.save(dish);
+//        return new DishDTO(
+//                dish.getName(),
+//                dish.getDescription(),
+//                dish.getPrice(),
+//                dish.isSpecial(),
+//                dish.isVegan(),
+//                dish.isPublish(),
+//                dish.getCategory(),
+//                dish.getIngredients(),
+//                dish.getToppings()
+//        );
+//    }
 
 
     public Dish getById(Long id) {
         return repository.findById(id).orElseThrow(
-                () -> new CategoryNotFoundException(String.format("Category with id %s not found", id)));
+                () -> new DishNotFoundException((String.format("Category with id %s not found", id))));
     }
 
     public void delete(Long id) {
@@ -81,7 +82,9 @@ public class  DishService {
     }
 
 
-
+    public Dish save(Dish dish) {
+        return repository.save(dish);
+    }
 }
 
 

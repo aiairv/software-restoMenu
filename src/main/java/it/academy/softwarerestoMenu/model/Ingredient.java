@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -20,5 +21,7 @@ public class Ingredient {
     private String name;
     @ManyToMany(mappedBy = "ingredients")
     private List<Dish> dishes;
-
+    LocalDateTime createDataTime = LocalDateTime.now();
+    LocalDateTime removeDateTime;
+    LocalDateTime updateDateTime = LocalDateTime.now();
 }
