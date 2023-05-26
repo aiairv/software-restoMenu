@@ -1,9 +1,9 @@
 package it.academy.softwarerestoMenu.services;
 
 
-import it.academy.softwarerestoMenu.exceptions.DishNotFoundException;
 import it.academy.softwarerestoMenu.entity.Category;
 import it.academy.softwarerestoMenu.entity.Dish;
+import it.academy.softwarerestoMenu.exceptions.DishNotFoundException;
 import it.academy.softwarerestoMenu.repository.CategoryRepository;
 import it.academy.softwarerestoMenu.repository.DishRepository;
 import org.springframework.stereotype.Service;
@@ -14,10 +14,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class  DishService {
+public class DishService {
 
-    private  DishRepository repository;
-    private  CategoryRepository categoryRepository;
+    private DishRepository repository;
+    private CategoryRepository categoryRepository;
 
 
     public DishService(DishRepository dishRepository, CategoryRepository categoryRepository) {
@@ -60,20 +60,21 @@ public class  DishService {
     public List<Dish> findAll() {
         return repository.findAllByRemoveDateTimeIsNull();
     }
-    public List<Dish> getAllPublishedDishes(){
+
+    public List<Dish> getAllPublishedDishes() {
         List<Dish> alldish = repository.findAllByRemoveDateTimeIsNull();
         List<Dish> publishedDishes = alldish.stream()
                 .filter(Dish::isPublish)
                 .collect(Collectors.toList());
-        return  publishedDishes;
+        return publishedDishes;
     }
-    public Map<Category,List<Dish>> getAllPublishedDishesGroupedByCategory(){
+
+    public Map<Category, List<Dish>> getAllPublishedDishesGroupedByCategory() {
         List<Dish> publishedDishes = repository.findByIsPublishTrue();
-        Map<Category , List<Dish>> dishesByCategory = publishedDishes.stream()
+        Map<Category, List<Dish>> dishesByCategory = publishedDishes.stream()
                 .collect(Collectors.groupingBy(Dish::getCategory));
         return dishesByCategory;
     }
-
 
     public Dish save(Dish dish) {
         return repository.save(dish);

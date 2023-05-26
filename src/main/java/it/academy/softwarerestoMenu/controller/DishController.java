@@ -1,9 +1,12 @@
 package it.academy.softwarerestoMenu.controller;
 
+import it.academy.softwarerestoMenu.dto.DishDTO;
 import it.academy.softwarerestoMenu.exceptions.DishNotFoundException;
 import it.academy.softwarerestoMenu.entity.Category;
 import it.academy.softwarerestoMenu.entity.Dish;
+import it.academy.softwarerestoMenu.mappers.DishMapper;
 import it.academy.softwarerestoMenu.services.DishService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,13 +15,11 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/dishes")
+@AllArgsConstructor
 public class DishController {
-
     private final DishService dishService;
+    private final DishMapper dishMapper;
 
-    public DishController(DishService dishService) {
-        this.dishService = dishService;
-    }
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public Dish create(@RequestBody Dish dish) {
@@ -26,8 +27,9 @@ public class DishController {
     }
 
     @GetMapping("/{id}")
-    public Dish getById(@PathVariable Long id) {
-        return dishService.getById(id);
+    public DishDTO getById(@PathVariable Long id) {
+        return dishMapper.map(dishService.getById(id));
+
     }
 
 
