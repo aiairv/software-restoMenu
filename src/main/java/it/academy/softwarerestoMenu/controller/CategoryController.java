@@ -37,13 +37,13 @@ public class CategoryController {
 
     @PutMapping("/")
     public Category update(@RequestBody Category category) {
-        if (category.getId() == null) throw new CategoryNotFoundException("DishController: update()  id is null");
+        if (category.getId() == null) throw new CategoryNotFoundException("CategoryController: update()  id is null");
         return service.save(category);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 }

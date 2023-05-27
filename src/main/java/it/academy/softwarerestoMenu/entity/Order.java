@@ -19,7 +19,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime orderTime;
+    private LocalDateTime orderTime=LocalDateTime.now();
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     @OneToMany
@@ -29,6 +29,6 @@ public class Order {
     @JoinColumn(name = "topping_id")
     private List<Topping> toppings;
     @ManyToOne
-    @JoinColumn(name = "consumer_id")
+    @JoinColumn(name = "user_id")
     private User user;
 }

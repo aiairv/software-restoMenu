@@ -1,8 +1,8 @@
 package it.academy.softwarerestoMenu.controller;
 
 import it.academy.softwarerestoMenu.dto.DishDTO;
+import it.academy.softwarerestoMenu.dto.DishDTOFilter;
 import it.academy.softwarerestoMenu.exceptions.DishNotFoundException;
-import it.academy.softwarerestoMenu.entity.Category;
 import it.academy.softwarerestoMenu.entity.Dish;
 import it.academy.softwarerestoMenu.mappers.DishMapper;
 import it.academy.softwarerestoMenu.services.DishService;
@@ -22,8 +22,8 @@ public class DishController {
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public Dish create(@RequestBody Dish dish) {
-        return dishService.save(dish);
+    public DishDTO create(@RequestBody Dish dish) {
+        return dishMapper.map(dishService.save(dish));
     }
 
     @GetMapping("/{id}")
@@ -50,8 +50,17 @@ public class DishController {
     }
 
     @GetMapping("/published")
-    public Map<Category, List<Dish>> getPublishedDishesGroupedByCategory() {
+    public Map<String, List<DishDTOFilter>> getPublishedDishesGroupedByCategory() {
         return dishService.getAllPublishedDishesGroupedByCategory();
+    }
+
+    @GetMapping("/filter")
+    public List<Dish> filterDishes(
+            @RequestParam(required = false) Boolean isVegan,
+            @RequestParam(required = false) Boolean isSpecial,
+            @RequestParam(required = false) List<String> toppingNames
+    ) {
+        return dishService.filterDishes(isVegan, isSpecial, toppingNames);
     }
 
 
