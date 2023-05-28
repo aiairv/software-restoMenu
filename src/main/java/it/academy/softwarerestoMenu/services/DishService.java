@@ -1,10 +1,10 @@
 package it.academy.softwarerestoMenu.services;
 
-
-import it.academy.softwarerestoMenu.dto.DishDTOFilter;
+import it.academy.softwarerestoMenu.dto.DishDTOforFilter;
 import it.academy.softwarerestoMenu.entity.Category;
 import it.academy.softwarerestoMenu.entity.Dish;
 import it.academy.softwarerestoMenu.exceptions.DishNotFoundException;
+import it.academy.softwarerestoMenu.mappers.DishMapper;
 import it.academy.softwarerestoMenu.repository.CategoryRepository;
 import it.academy.softwarerestoMenu.repository.DishRepository;
 import org.springframework.stereotype.Service;
@@ -13,20 +13,20 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import java.util.stream.Collectors;
 
 @Service
 public class DishService {
 
     private final DishRepository repository;
-    private CategoryRepository categoryRepository;
 
-
-    public DishService(DishRepository dishRepository, CategoryRepository categoryRepository) {
+    public DishService(DishRepository dishRepository, CategoryRepository categoryRepository, DishMapper dishMapper) {
         this.repository = dishRepository;
-        this.categoryRepository = categoryRepository;
     }
-
+    public Dish save(Dish dish) {
+        return repository.save(dish);
+    }
 
     public Dish getById(Long id) {
         return repository.findById(id).orElseThrow(
@@ -51,38 +51,38 @@ public class DishService {
         return publishedDishes;
     }
 
-public Map<String, List<DishDTOFilter>> getAllPublishedDishesGroupedByCategory() {
-    List<Dish> publishedDishes = repository.findByIsPublishTrue();
-    Map<Category, List<Dish>> dishesByCategory = publishedDishes.stream()
-            .collect(Collectors.groupingBy(Dish::getCategory));
+    public Map<String, List<DishDTOforFilter>> getAllPublishedDishesGroupedByCategory() {
+        List<Dish> publishedDishes = repository.findByIsPublishTrue();
+        Map<Category, List<Dish>> dishesByCategory = publishedDishes.stream()
+                .collect(Collectors.groupingBy(Dish::getCategory));
 
-    Map<String, List<DishDTOFilter>> getListMap = new HashMap<>();
+        Map<String, List<DishDTOforFilter>> getListMap = new HashMap<>();
 
-    for (Map.Entry<Category, List<Dish>> entry : dishesByCategory.entrySet()) {
-        Category category = entry.getKey();
-        List<Dish> dishes = entry.getValue();
+        for (Map.Entry<Category, List<Dish>> entry : dishesByCategory.entrySet()) {
+            Category category = entry.getKey();
+            List<Dish> dishes = entry.getValue();
 
-        List<DishDTOFilter> dishDTOs = dishes.stream()
-                .map(d -> new DishDTOFilter( d.getName(), d.getDescription(), d.getPrice()))
-                .collect(Collectors.toList());
+            List<DishDTOforFilter> dishDTOs = dishes.stream()
+                    .map(d -> new DishDTOforFilter(d.getName(), d.getDescription(), d.getPrice()))
+                    .collect(Collectors.toList());
 
-        getListMap.put(category.getName(), dishDTOs);
+            getListMap.put(category.getName(), dishDTOs);
+        }
+
+        return getListMap;
     }
 
-    return getListMap;
+
+//    public List<Dish> filterDishes(Boolean isVegan, Boolean isSpecial) {
+////        return repository.filterDishes(isVegan, isSpecial, toppingNames);
+//        return repository.filterDishes(isVegan, isSpecial);
+//    }
+    public List<Dish> getDishesByFilters(boolean isVegan, boolean isSpecial) {
+    return repository.findDishesByFilters(isVegan, isSpecial);
+}
 }
 
-    public Dish save(Dish dish) {
-        return repository.save(dish);
-    }
 
-    public List<Dish> filterDishes(Boolean isVegan, Boolean isSpecial, List<String> toppingNames) {
-//        return repository.filterDishes(isVegan, isSpecial, toppingNames);
-        return repository.filterDishes(isVegan, isSpecial);
-
-
-    }
-}
 
 
 

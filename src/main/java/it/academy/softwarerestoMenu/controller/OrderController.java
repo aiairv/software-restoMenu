@@ -1,67 +1,40 @@
 package it.academy.softwarerestoMenu.controller;
 
+import it.academy.softwarerestoMenu.dto.OrderDTO;
 import it.academy.softwarerestoMenu.entity.Order;
 
+import it.academy.softwarerestoMenu.mappers.OrderMapper;
 import it.academy.softwarerestoMenu.services.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("api/orders")
+@RequestMapping("/orders")
 public class OrderController {
     private final OrderService orderService;
+    private final OrderMapper orderMapper;
 
-    @Autowired
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, OrderMapper orderMapper) {
         this.orderService = orderService;
+        this.orderMapper = orderMapper;
     }
 
-    @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        Order createdOrder = orderService.create(order);
-        return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
+    @PostMapping("/")
+    public OrderDTO createOrder() {
+        Order order = orderService.create();
+        return orderMapper.toDTO(order);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-        Order order = orderService.getById(id);
-        if (order != null) {
-            return new ResponseEntity<>(order, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @PostMapping("/{orderId}/dishes/{dishId}")
+    public OrderDTO addDishToOrder(@PathVariable Long orderId, @PathVariable Long dishId) {
+        Order order = orderService.addDishToOrder(orderId, dishId);
+        return orderMapper.toDTO(order);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> orders = orderService.getAll();
-        return new ResponseEntity<>(orders, HttpStatus.OK);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order order) {
-        Order existingOrder = orderService.getById(id);
-        if (existingOrder != null) {
-            order.setId(id);
-            Order updatedOrder = orderService.update(order);
-            return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
-        Order existingOrder = orderService.getById(id);
-        if (existingOrder != null) {
-            orderService.delete(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/{orderId}")
+    public OrderDTO getOrder(@PathVariable Long orderId) {
+        Order order = orderService.getOrder(orderId);
+        return orderMapper.toDTO(order);
     }
 }
+
+

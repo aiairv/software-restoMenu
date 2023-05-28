@@ -31,6 +31,6 @@ public class ToppingService {
 
     public List<Topping> findAll() {
         return repository.findAll();
-}
+    }
 }
 

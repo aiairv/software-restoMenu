@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @AllArgsConstructor
 public class DishMapper {
@@ -18,5 +20,6 @@ public class DishMapper {
     public DishDTO map(Dish dish) {
         return modelMapper.map(dish, DishDTO.class);
     }
+
 
 }

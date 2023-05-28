@@ -1,7 +1,7 @@
 package it.academy.softwarerestoMenu.controller;
 
-import it.academy.softwarerestoMenu.exceptions.CategoryNotFoundException;
 import it.academy.softwarerestoMenu.entity.Category;
+import it.academy.softwarerestoMenu.exceptions.CategoryNotFoundException;
 import it.academy.softwarerestoMenu.services.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,6 @@ public class CategoryController {
     public Category getById(@PathVariable Long id) {
         return service.getById(id);
     }
-
 
     @GetMapping("/")
     public List<Category> getAll() {

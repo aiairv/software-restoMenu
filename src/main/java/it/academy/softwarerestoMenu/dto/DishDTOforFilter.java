@@ -10,8 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Builder
-public class DishDTOFilter {
-
+public class DishDTOforFilter {
     private String name;
     private String description;
     private BigDecimal price;

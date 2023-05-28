@@ -25,7 +25,7 @@ public class IngredientController {
     }
 
     @GetMapping("/{id}")
-    public Ingredient getById(@PathVariable Long id) {
+    public Ingredient getById(@PathVariable Long id)  {
         return service.getById(id);
     }
 
@@ -37,7 +37,7 @@ public class IngredientController {
 
     @PutMapping("/")
     public Ingredient update(@RequestBody Ingredient ingredient) {
-        if (ingredient.getId() == null) throw new CategoryNotFoundException("DishController: update()  id is null");
+        if (ingredient.getId() == null) throw new CategoryNotFoundException("IngredientController: update()  id is null");
         return service.create(ingredient);
     }
 

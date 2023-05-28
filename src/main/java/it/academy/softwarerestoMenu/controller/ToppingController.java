@@ -37,7 +37,7 @@ public class ToppingController {
 
     @PutMapping("/")
     public Topping update(@RequestBody Topping topping) {
-        if (topping.getId() == null) throw new ToppingNotFoundException("DishController: update()  id is null");
+        if (topping.getId() == null) throw new ToppingNotFoundException("ToppingController: update()  id is null");
         return service.create(topping);
     }
 

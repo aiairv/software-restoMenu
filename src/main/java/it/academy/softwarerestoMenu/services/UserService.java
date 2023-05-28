@@ -1,13 +1,11 @@
 package it.academy.softwarerestoMenu.services;
 
 
-import it.academy.softwarerestoMenu.exceptions.UserNotFoundException;
 import it.academy.softwarerestoMenu.entity.User;
+import it.academy.softwarerestoMenu.exceptions.UserNotFoundException;
 import it.academy.softwarerestoMenu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
-
 
 
 @Service
@@ -35,7 +33,7 @@ public class UserService {
 
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
-                . orElseThrow(UserNotFoundException::new);
+                .orElseThrow(UserNotFoundException::new);
         userRepository.delete(user);
     }
 
