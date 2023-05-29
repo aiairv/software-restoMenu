@@ -17,7 +17,7 @@ public class Topping {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToMany
+    @ManyToMany(mappedBy = "toppings")
     private List<Dish> dishes;
 
 }
