@@ -62,6 +62,14 @@ public class    CartService {
         cart.setDishes(dishes);
         return cartRepository.save(cart);
     }
+    public Cart getCartById(Long cartId) {
+        return cartRepository.findById(cartId)
+                .orElseThrow(() -> new IllegalArgumentException("Cart not found with id: " + cartId));
+    }
+
+    public void deleteCart(Long cartId) {
+        cartRepository.deleteById(cartId);
+    }
 }
 
 
