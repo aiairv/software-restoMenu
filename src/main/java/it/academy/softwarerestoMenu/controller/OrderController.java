@@ -1,5 +1,6 @@
 package it.academy.softwarerestoMenu.controller;
 
+import it.academy.softwarerestoMenu.dto.OrderDto;
 import it.academy.softwarerestoMenu.entity.Order;
 import it.academy.softwarerestoMenu.service.OrderService;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,14 @@ public class OrderController {
         Order order = orderService.createOrder(cartId);
         return ResponseEntity.ok(order);
     }
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long id) {
+        OrderDto orderDto = orderService.getOrderById(id);
+        if (orderDto != null) {
+            return ResponseEntity.ok(orderDto);
+        }
+        return ResponseEntity.notFound().build();
+    }
 
-    // Другие методы контроллера для работы с заказами
 }
 

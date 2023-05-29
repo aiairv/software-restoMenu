@@ -1,5 +1,6 @@
 package it.academy.softwarerestoMenu.service;
 
+import it.academy.softwarerestoMenu.dto.OrderDto;
 import it.academy.softwarerestoMenu.entity.Cart;
 import it.academy.softwarerestoMenu.entity.Order;
 import it.academy.softwarerestoMenu.repository.OrderRepository;
@@ -15,20 +16,26 @@ public class OrderService {
     public Order createOrder(Long cartId) {
         Cart cart = cartService.getCartById(cartId);
 
-        // Создайте новый объект заказа
         Order order = new Order();
         order.setUser(cart.getUser());
         order.setDishes(cart.getDishes());
-        // Другие операции по оформлению заказа
 
-        // Сохраните заказ в репозитории
         orderRepository.save(order);
 
-        // Удалите корзину после оформления заказа
         cartService.deleteCart(cartId);
 
         return order;
     }
+    public OrderDto getOrderById(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order != null) {
+            OrderDto orderDto = new OrderDto();
+            orderDto.setId(order.getId());
+            orderDto.setOrderTime(order.getOrderTime());
 
+            return orderDto;
+        }
+        return null;
+    }
 }
 
