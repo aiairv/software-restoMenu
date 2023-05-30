@@ -28,18 +28,6 @@ public class User {
     private String password;
     @JsonIgnore
     @OneToMany(mappedBy = "user")
-    private List <Cart> carts;
-//    @OneToMany
-//    private List<Cart> carts;
+    private List<Cart> carts;
 }
-////    @Enumerated(value = EnumType.STRING)
-////    private AuthStatus authStatus;
-//    @Enumerated(value = EnumType.STRING)
-//    private Role role;
-//
-////    @OneToMany
-////    private List<Order> orders;
-////    @OneToOne
-////    private Cart cart;
 
-//}
