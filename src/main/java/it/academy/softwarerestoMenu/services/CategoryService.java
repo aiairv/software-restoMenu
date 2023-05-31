@@ -1,5 +1,8 @@
 package it.academy.softwarerestoMenu.services;
 
+import it.academy.softwarerestoMenu.dto.CategoryDTO;
+import it.academy.softwarerestoMenu.dto.ToppingDTO;
+import it.academy.softwarerestoMenu.entity.Topping;
 import it.academy.softwarerestoMenu.exceptions.CategoryNotFoundException;
 import it.academy.softwarerestoMenu.entity.Category;
 import it.academy.softwarerestoMenu.repository.CategoryRepository;
@@ -7,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,6 +32,14 @@ public class CategoryService {
         var category = getById(id);
         category.setRemoveDateTime(LocalDateTime.now());
         save(category);
+    }
+
+    public CategoryDTO mapToDto(Category category) {
+     return   CategoryDTO.builder()
+             .id(category.getId())
+             .name(category.getName())
+             .isPublish(category.getIsPublish())
+             .build();
     }
 
     public List<Category> findAll() {

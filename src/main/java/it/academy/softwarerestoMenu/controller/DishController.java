@@ -2,6 +2,7 @@ package it.academy.softwarerestoMenu.controller;
 
 import it.academy.softwarerestoMenu.dto.DishDTO;
 import it.academy.softwarerestoMenu.dto.DishDTOforFilter;
+import it.academy.softwarerestoMenu.dto.DishResponseDTO;
 import it.academy.softwarerestoMenu.entity.Dish;
 import it.academy.softwarerestoMenu.exceptions.DishNotFoundException;
 import it.academy.softwarerestoMenu.mappers.DishMapper;
@@ -23,9 +24,8 @@ public class DishController {
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public DishDTO create(@RequestBody DishDTO dishDTO) {
-        Dish createdDish = dishService.save(dishDTO);
-        return dishMapper.map(createdDish);
+    public DishResponseDTO create(@RequestBody DishDTO dishDTO) {
+        return dishService.save(dishDTO);
     }
 
 
@@ -51,7 +51,7 @@ public class DishController {
     @PutMapping("/")
     public Dish update(@RequestBody DishDTO dishDTO) {
         if (dishDTO.getId() == null) throw new DishNotFoundException("DishController: update()  id is null");
-        return dishService.save(dishDTO);
+        return null;
     }
 
     @DeleteMapping("/{id}")

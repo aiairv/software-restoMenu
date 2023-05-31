@@ -1,6 +1,7 @@
 package it.academy.softwarerestoMenu.entity;
 
 import it.academy.softwarerestoMenu.enums.Place;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

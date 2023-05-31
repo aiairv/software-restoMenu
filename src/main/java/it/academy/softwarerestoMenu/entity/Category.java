@@ -17,7 +17,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private boolean isPublish;
+    private Boolean isPublish;
     LocalDateTime createDataTime = LocalDateTime.now();
     LocalDateTime removeDateTime;
     LocalDateTime updateDateTime = LocalDateTime.now();

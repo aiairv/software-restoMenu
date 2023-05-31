@@ -1,7 +1,6 @@
 package it.academy.softwarerestoMenu.services;
 
-import it.academy.softwarerestoMenu.dto.DishDTO;
-import it.academy.softwarerestoMenu.dto.DishDTOforFilter;
+import it.academy.softwarerestoMenu.dto.*;
 import it.academy.softwarerestoMenu.entity.Category;
 import it.academy.softwarerestoMenu.entity.Dish;
 import it.academy.softwarerestoMenu.entity.Ingredient;
@@ -16,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,24 +31,69 @@ public class DishService {
     private IngredientRepository ingredientRepository;
     private ToppingRepository toppingRepository;
 
-//    public Dish save(Dish dish) {
+    //    public Dish save(Dish dish) {
 //        return repository.save(dish);
 //    }
-    public Dish save(DishDTO dishDTO) {
-    Dish dish = dishMapper.map(dishDTO);
+    public DishResponseDTO save(DishDTO dishDTO) {
+        Dish dish = dishMapper.map(dishDTO);
 
-    // Загрузка категории, ингредиентов и топпингов по их идентификаторам
-    Category category = categoryRepository.findById(dishDTO.getCategoryId()).orElse(null);
-    List<Ingredient> ingredients = ingredientRepository.findAllById(dishDTO.getIngredientIds());
-    List<Topping> toppings = toppingRepository.findAllById(dishDTO.getToppingIds());
+        // Загрузка категории, ингредиентов и топпингов по их идентификаторам
+        Category category = categoryRepository.findById(dishDTO.getCategoryId()).orElse(null);
+        List<Ingredient> ingredients = ingredientRepository.findAllById(dishDTO.getIngredientIds());
+        List<Topping> toppings = toppingRepository.findAllById(dishDTO.getToppingIds());
 
-    // Связывание объектов с блюдом
-    dish.setCategory(category);
-    dish.setIngredients(ingredients);
-    dish.setToppings(toppings);
+        // Связывание объектов с блюдом
+        dish.setCategory(category);
+        dish.setIngredients(ingredients);
+        dish.setToppings(toppings);
 
-    return dishRepository.save(dish);
-}
+        Dish createdDish = dishRepository.save(dish);
+        return mapperToDto(createdDish);
+    }
+
+    private DishResponseDTO mapperToDto(Dish dish) {
+
+        return DishResponseDTO.builder()
+                .id(dish.getId())
+                .name(dish.getName())
+                .description(dish.getDescription())
+                .price(dish.getPrice())
+                .isSpecial(dish.getIsSpecial())
+                .isVegan(dish.getIsVegan())
+                .isPublish(dish.getIsPublish())
+                .category(new CategoryDTO().builder()
+                        .id(dish.getCategory().getId())
+                        .name(dish.getCategory().getName())
+                        .isPublish(dish.getCategory().getIsPublish())
+                        .build())
+                .ingredients(convertIngredientToDTOList(dish.getIngredients()))
+                .toppings(convertToppingToDTOList(dish.getToppings()))
+                .build();
+
+
+    }
+
+    public List<IngredientDTO> convertIngredientToDTOList(List<Ingredient> ingredients) {
+        List<IngredientDTO> ingredientDTOs = new ArrayList<>();
+        for (Ingredient ingredient : ingredients) {
+            IngredientDTO ingredientDTO = new IngredientDTO();
+            ingredientDTO.setId(ingredient.getId());
+            ingredientDTO.setName(ingredient.getName());
+            ingredientDTOs.add(ingredientDTO);
+        }
+        return ingredientDTOs;
+    }
+
+    public List<ToppingDTO> convertToppingToDTOList(List<Topping> toppings) {
+        List<ToppingDTO> toppingDTOs = new ArrayList<>();
+        for (Topping topping : toppings) {
+            ToppingDTO toppingDTO = new ToppingDTO();
+            toppingDTO.setId(topping.getId());
+            toppingDTO.setName(topping.getName());
+            toppingDTOs.add(toppingDTO);
+        }
+        return toppingDTOs;
+    }
 
 
     public Dish getById(Long id) {
@@ -61,16 +106,16 @@ public class DishService {
         dish.setRemoveDateTime(LocalDateTime.now());
         dishRepository.save(dish);
     }
+
     public List<Dish> findAll() {
         return dishRepository.findAllByRemoveDateTimeIsNull();
     }
 
     public List<Dish> getAllPublishedDishes() {
-        List<Dish> alldish = dishRepository.findAllByRemoveDateTimeIsNull();
-        List<Dish> publishedDishes = alldish.stream()
-                .filter(Dish::isPublish)
+        List<Dish> allDish = dishRepository.findAllByRemoveDateTimeIsNull();
+        return allDish.stream()
+                .filter(Dish::getIsPublish)
                 .collect(Collectors.toList());
-        return publishedDishes;
     }
 
     public Map<String, List<DishDTOforFilter>> getAllPublishedDishesGroupedByCategory() {

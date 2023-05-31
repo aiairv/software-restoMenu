@@ -28,11 +28,11 @@ import java.util.List;
     @Column(nullable = false)
     private BigDecimal price;
     @Column(nullable = false)
-    private boolean isSpecial;
+    private Boolean isSpecial;
     @Column(nullable = false)
-    private boolean isVegan;
+    private Boolean isVegan;
     @Column(nullable = false)
-    private boolean isPublish;
+    private Boolean isPublish;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;

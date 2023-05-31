@@ -1,20 +1,16 @@
 package it.academy.softwarerestoMenu.dto;
 
-import it.academy.softwarerestoMenu.entity.Ingredient;
-import it.academy.softwarerestoMenu.entity.Topping;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-public class DishDTO {
+public class DishResponseDTO {
     private Long id;
     private String name;
     private String description;
@@ -22,8 +18,8 @@ public class DishDTO {
     private Boolean isSpecial;
     private Boolean isVegan;
     private Boolean isPublish;
-    private Long categoryId;
-    private List<Long> ingredientIds;
-    private List<Long> toppingIds;
+    private CategoryDTO category;
+    private List<IngredientDTO> ingredients;
+    private List<ToppingDTO> toppings;
 
 }
