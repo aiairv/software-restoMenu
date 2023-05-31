@@ -1,6 +1,7 @@
 package it.academy.softwarerestoMenu.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import it.academy.softwarerestoMenu.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,8 @@ public class User {
     private String phoneNumber;
     @Column(name = "password", nullable = false)
     private String password;
+    @Enumerated
+    private Role role;
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Cart> carts;
