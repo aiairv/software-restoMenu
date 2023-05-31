@@ -19,9 +19,10 @@ public class OrderController {
     }
 
     @PostMapping("/")
-    public OrderDTO createOrder() {
-        Order order = orderService.create();
-        return orderMapper.toDTO(order);
+    public OrderDTO createOrder(@RequestBody OrderDTO orderDTO) {
+        Order order = orderMapper.toEntity(orderDTO); // Преобразование OrderDTO в Order
+        Order createdOrder = orderService.create(order);
+        return orderMapper.toDTO(createdOrder);
     }
 
     @PostMapping("/{orderId}/dishes/{dishId}")

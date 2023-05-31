@@ -21,8 +21,7 @@ public class OrderService {
         this.dishRepository = dishRepository;
     }
 
-    public Order create() {
-        Order order = new Order();
+    public Order create(Order order) {
         return orderRepository.save(order);
     }
 

@@ -18,8 +18,8 @@ import java.util.List;
 public class OrderDTO {
     private LocalDateTime orderTime=LocalDateTime.now();
     private OrderStatus orderStatus;
-    private List<Long> dishesIds;
+    private List<Dish> dishesIds;
 
-    private List<Long> toppingsIds;
-    private Long userId;
+    private List<Topping> toppingsIds;
+    private User userId;
 }

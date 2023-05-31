@@ -1,5 +1,6 @@
 package it.academy.softwarerestoMenu.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,9 +48,5 @@ import java.util.List;
     LocalDateTime removeDateTime;
     LocalDateTime updateDateTime = LocalDateTime.now();
 
-    public Dish(String name, String description, BigDecimal price,
-                boolean isSpecial, boolean isVegan, boolean isPublish,
-                Category category, List<Ingredient> ingredients, List<Topping> toppings) {
-    }
 
 }

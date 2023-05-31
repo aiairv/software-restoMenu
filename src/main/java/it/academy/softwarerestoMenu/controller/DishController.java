@@ -24,10 +24,10 @@ public class DishController {
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public DishDTO create(@RequestBody DishDTO dishDTO) {
-        Dish dish = dishMapper.map(dishDTO);
-        Dish createdDish = dishService.save(dish);
+        Dish createdDish = dishService.save(dishDTO);
         return dishMapper.map(createdDish);
     }
+
 
     @GetMapping("/{id}")
     public DishDTO getById(@PathVariable Long id) {
@@ -49,9 +49,9 @@ public class DishController {
     }
 
     @PutMapping("/")
-    public Dish update(@RequestBody Dish dish) {
-        if (dish.getId() == null) throw new DishNotFoundException("DishController: update()  id is null");
-        return dishService.save(dish);
+    public Dish update(@RequestBody DishDTO dishDTO) {
+        if (dishDTO.getId() == null) throw new DishNotFoundException("DishController: update()  id is null");
+        return dishService.save(dishDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -65,14 +65,6 @@ public class DishController {
         return dishService.getAllPublishedDishesGroupedByCategory();
     }
 
-    //    @GetMapping("/filter")
-//    public List<Dish> filterDishes(
-//            @RequestParam(required = false) Boolean isVegan,
-//            @RequestParam(required = false) Boolean isSpecial
-////            @RequestParam(required = false) List<String> toppingNames
-//    ) {
-//        return dishService.filterDishes(isVegan, isSpecial);
-//    }
     @GetMapping("/filter")
     public List<DishDTO> getDishesByFilters
     (@RequestParam(value = "isVegan", required = false) boolean isVegan,

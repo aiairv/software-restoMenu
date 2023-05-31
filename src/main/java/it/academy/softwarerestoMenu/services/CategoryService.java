@@ -13,14 +13,14 @@ import java.util.List;
 public class CategoryService {
 
     @Autowired
-    private CategoryRepository repo;
+    private CategoryRepository repository;
 
     public Category save(Category category) {
-        return repo.save(category);
+        return repository.save(category);
     }
 
     public Category getById(Long id) {
-        return repo.findById(id).orElseThrow(
+        return repository.findById(id).orElseThrow(
                 () -> new CategoryNotFoundException(String.format("Category with id %s not found", id)));
     }
 
@@ -31,7 +31,7 @@ public class CategoryService {
     }
 
     public List<Category> findAll() {
-        return repo.findAllByRemoveDateTimeIsNull();
+        return repository.findAllByRemoveDateTimeIsNull();
     }
 }
 
