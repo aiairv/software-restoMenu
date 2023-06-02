@@ -20,8 +20,6 @@ public class Ingredient {
     private Long id;
     @Column(nullable = false)
     private String name;
-    @ManyToMany(mappedBy = "ingredients")
-    private List<Dish> dishes;
     LocalDateTime createDataTime = LocalDateTime.now();
     LocalDateTime removeDateTime;
     LocalDateTime updateDateTime = LocalDateTime.now();
