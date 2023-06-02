@@ -9,6 +9,7 @@ import it.academy.softwarerestoMenu.mappers.DishMapper;
 import it.academy.softwarerestoMenu.services.DishService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,14 +31,14 @@ public class DishController {
 
 
     @GetMapping("/{id}")
-    public DishDTO getById(@PathVariable Long id) {
-        return dishMapper.map(dishService.getById(id));
+    public DishResponseDTO getById(@PathVariable Long id) {
+        DishResponseDTO dishResponseDTO = dishService.getById(id);
+        return dishResponseDTO;
     }
 
     @GetMapping("/all")
-    public List<DishDTO> getAll() {
-        List<Dish> dishes = dishService.findAll();
-        return dishes.stream().map(dishMapper::map).collect(Collectors.toList());
+    public List<DishResponseDTO> getAllDishes() {
+        return dishService.findAll();
     }
 
     @GetMapping("/")
@@ -48,10 +49,9 @@ public class DishController {
                 .collect(Collectors.toList());
     }
 
-    @PutMapping("/")
-    public Dish update(@RequestBody DishDTO dishDTO) {
-        if (dishDTO.getId() == null) throw new DishNotFoundException("DishController: update()  id is null");
-        return null;
+    @PutMapping("/{dishId}")
+    public DishResponseDTO updateDish(@PathVariable Long dishId, @RequestBody DishDTO dishDTO) {
+        return dishService.update(dishId, dishDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -74,6 +74,4 @@ public class DishController {
                 .map(dishMapper::map)
                 .collect(Collectors.toList());
     }
-
-
 }

@@ -1,41 +1,65 @@
 package it.academy.softwarerestoMenu.controller;
 
 import it.academy.softwarerestoMenu.dto.OrderDTO;
+import it.academy.softwarerestoMenu.entity.Dish;
 import it.academy.softwarerestoMenu.entity.Order;
-
-import it.academy.softwarerestoMenu.mappers.OrderMapper;
+import it.academy.softwarerestoMenu.entity.Topping;
+import it.academy.softwarerestoMenu.entity.UpdateOrderStatusRequest;
+import it.academy.softwarerestoMenu.enums.OrderStatus;
 import it.academy.softwarerestoMenu.services.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("api/orders")
 public class OrderController {
-    private final OrderService orderService;
-    private final OrderMapper orderMapper;
+    @Autowired
+    private OrderService orderService;
 
-    public OrderController(OrderService orderService, OrderMapper orderMapper) {
-        this.orderService = orderService;
-        this.orderMapper = orderMapper;
+    @PostMapping
+    public Order createOrder(@RequestBody OrderDTO orderDTO) {
+        return orderService.createOrder(orderDTO);
     }
 
-    @PostMapping("/")
-    public OrderDTO createOrder(@RequestBody OrderDTO orderDTO) {
-        Order order = orderMapper.toEntity(orderDTO);
-        Order createdOrder = orderService.create(order);
-        return orderMapper.toDTO(createdOrder);
+    @PostMapping("/{orderId}/dishes")
+    public void addDishToOrder(@PathVariable Long orderId, @RequestBody Dish dish) {
+        Order order = orderService.getById(orderId);
+        orderService.addDishToOrder(order, dish);
     }
 
-    @PostMapping("/{orderId}/dishes/{dishId}")
-    public OrderDTO addDishToOrder(@PathVariable Long orderId, @PathVariable Long dishId) {
-        Order order = orderService.addDishToOrder(orderId, dishId);
-        return orderMapper.toDTO(order);
+    @DeleteMapping("/{orderId}/dishes")
+    public void removeDishFromOrder(@PathVariable Long orderId, @RequestBody Dish dish) {
+        Order order = orderService.getById(orderId);
+        orderService.removeDishFromOrder(order, dish);
     }
 
-    @GetMapping("/{orderId}")
-    public OrderDTO getOrder(@PathVariable Long orderId) {
-        Order order = orderService.getOrder(orderId);
-        return orderMapper.toDTO(order);
+    @PostMapping("/{orderId}/toppings")
+    public void addToppingToOrder(@PathVariable Long orderId, @RequestBody Topping topping) {
+        Order order = orderService.getById(orderId);
+        orderService.addToppingToOrder(order, topping);
+    }
+
+    @DeleteMapping("/{orderId}/toppings")
+    public void removeToppingFromOrder(@PathVariable Long orderId, @RequestBody Topping topping) {
+        Order order = orderService.getById(orderId);
+        orderService.removeToppingFromOrder(order, topping);
+    }
+
+    @PutMapping("/{orderId}/status")
+    public void updateOrderStatus(@PathVariable Long orderId, @RequestBody UpdateOrderStatusRequest request) {
+        Order order = orderService.getById(orderId);
+        OrderStatus status = request.getStatus();
+        orderService.updateOrderStatus(order, status);
+    }
+
+    @GetMapping("/{orderId}/totalCost")
+    public BigDecimal calculateTotalOrderCost(@PathVariable Long orderId) {
+        Order order = orderService.getById(orderId);
+        return orderService.calculateTotalOrderCost(order);
     }
 }
+
 
 
