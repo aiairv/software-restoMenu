@@ -4,7 +4,6 @@ import it.academy.softwarerestoMenu.entity.Dish;
 import it.academy.softwarerestoMenu.entity.Topping;
 import it.academy.softwarerestoMenu.entity.User;
 import it.academy.softwarerestoMenu.enums.OrderStatus;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
