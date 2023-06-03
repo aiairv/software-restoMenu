@@ -9,6 +9,5 @@ import lombok.*;
 @Setter
 @Builder
 public class ToppingDTO {
-    private Long id;
     private String name;
 }

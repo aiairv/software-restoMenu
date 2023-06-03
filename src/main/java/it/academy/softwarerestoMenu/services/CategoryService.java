@@ -20,18 +20,35 @@ public class CategoryService {
     private CategoryRepository repository;
 
     public Category save(Category category) {
+        if (repository.findByName(category.getName()).isPresent()) {
+            throw new CategoryNotFoundException(String.format("Категория с названием %s уже существует", category.getName()));
+        }
+        return repository.save(category);
+    }
+    public Category restoreCategory(Long id) {
+        Category category = repository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException(String.format("Категория с id %s не найден", id)));
+        if (category.getRemoveDateTime() == null) {
+            throw new CategoryNotFoundException(String.format("Категория с id %s не удалена", id));
+        }
+        category.setRemoveDateTime(null);
         return repository.save(category);
     }
 
+
+
     public Category getById(Long id) {
-        return repository.findById(id).orElseThrow(
-                () -> new CategoryNotFoundException(String.format("Category with id %s not found", id)));
+        return repository.findById(id)
+                .filter(category -> category.getRemoveDateTime() == null)
+                .orElseThrow(
+                () -> new CategoryNotFoundException(String.format("Категория с id: %s не найдена", id)));
     }
 
-    public void delete(Long id) {
+    public Long delete(Long id) {
         var category = getById(id);
         category.setRemoveDateTime(LocalDateTime.now());
-        save(category);
+        repository.save(category);
+        return category.getId();
     }
 
     public CategoryDTO mapToDto(Category category) {

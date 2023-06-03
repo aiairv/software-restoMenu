@@ -4,10 +4,13 @@ import it.academy.softwarerestoMenu.dto.DishDTO;
 import it.academy.softwarerestoMenu.dto.DishDTOforFilter;
 import it.academy.softwarerestoMenu.dto.DishResponseDTO;
 import it.academy.softwarerestoMenu.entity.Dish;
+import it.academy.softwarerestoMenu.entity.ResponseMessage;
+import it.academy.softwarerestoMenu.enums.ResultCode;
 import it.academy.softwarerestoMenu.exceptions.DishNotFoundException;
 import it.academy.softwarerestoMenu.mappers.DishMapper;
 import it.academy.softwarerestoMenu.services.DishService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,27 +20,47 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/dishes")
+@RequestMapping("/dishes")
 @AllArgsConstructor
+@Slf4j
 public class DishController {
     private final DishService dishService;
     private final DishMapper dishMapper;
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public DishResponseDTO create(@RequestBody DishDTO dishDTO) {
-        return dishService.save(dishDTO);
+    public ResponseMessage<DishResponseDTO> create(@RequestBody DishDTO dishDTO) {
+        try {
+            return new ResponseMessage<>(
+                    dishService.save(dishDTO),
+                    ResultCode.SUCCESS, "Блюдо успешно создано",
+                    ResultCode.SUCCESS.getHttpCode());
+        } catch (Exception exception) {
+            log.error("DishController: create", exception);
+            return new ResponseMessage<>(null, ResultCode.FAIL, exception.getMessage(), ResultCode.FAIL.getHttpCode());
+        }
     }
 
 
     @GetMapping("/{id}")
-    public DishResponseDTO getById(@PathVariable Long id) {
-        DishResponseDTO dishResponseDTO = dishService.getById(id);
-        return dishResponseDTO;
+    public ResponseMessage<DishResponseDTO> getById(@PathVariable Long id) {
+        try {
+            DishResponseDTO dishResponseDTO = dishService.getById(id);
+            return new ResponseMessage<>(
+                   dishResponseDTO,
+                    ResultCode.SUCCESS,"Блюдо по ID найдено",
+                    ResultCode.SUCCESS.getHttpCode());
+        } catch (Exception exception) {
+            log.error("DishController: getById", exception);
+            return new ResponseMessage<>(null,
+                    ResultCode.FAIL,
+                    exception.getMessage(),
+                    ResultCode.FAIL.getHttpCode());
+        }
     }
 
     @GetMapping("/all")
-    public List<DishResponseDTO> getAllDishes() {
+    public List<DishDTOforFilter> getAllDishes() {
         return dishService.findAll();
     }
 
@@ -50,14 +73,37 @@ public class DishController {
     }
 
     @PutMapping("/{dishId}")
-    public DishResponseDTO updateDish(@PathVariable Long dishId, @RequestBody DishDTO dishDTO) {
-        return dishService.update(dishId, dishDTO);
+    public ResponseMessage<DishResponseDTO> updateDish(@PathVariable Long dishId, @RequestBody DishDTO dishDTO) {
+        try {
+            return new ResponseMessage<>(
+                    dishService.update(dishId, dishDTO),
+                    ResultCode.SUCCESS,
+                    "Блюдо успешно обновлено",
+                    ResultCode.SUCCESS.getHttpCode()
+            );
+        } catch (Exception exception) {
+            log.error("DishController: updateDish", exception);
+            return new ResponseMessage<>(
+                    null,
+                    ResultCode.FAIL,
+                    exception.getMessage(),
+                    ResultCode.FAIL.getHttpCode()
+            );
+        }
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        dishService.delete(id);
+    public ResponseMessage<Long> delete(@PathVariable Long id) {
+        try {
+            return new ResponseMessage<>(
+                    dishService.delete(id),
+                    ResultCode.SUCCESS, "Блюдо успешно удалено!",
+                    ResultCode.SUCCESS.getHttpCode());
+        } catch (Exception e) {
+            log.error("DishController: delete ", e);
+            return new ResponseMessage<>(null, ResultCode.FAIL,
+                    e.getMessage(), ResultCode.FAIL.getHttpCode());
+        }
     }
 
     @GetMapping("/published")
@@ -66,12 +112,34 @@ public class DishController {
     }
 
     @GetMapping("/filter")
-    public List<DishDTO> getDishesByFilters
-    (@RequestParam(value = "isVegan", required = false) boolean isVegan,
-     @RequestParam(value = "isSpecial", required = false) boolean isSpecial) {
-        List<Dish> dishes = dishService.getDishesByFilters(isVegan, isSpecial);
-        return dishes.stream()
-                .map(dishMapper::map)
-                .collect(Collectors.toList());
+    public ResponseMessage<List<DishDTOforFilter>> getDishesByFilters(
+            @RequestParam(name = "isVegan", defaultValue = "false") boolean isVegan,
+            @RequestParam(name = "isSpecial", defaultValue = "false") boolean isSpecial) {
+        try {
+            List<DishDTOforFilter> filteredDishes = dishService.getDishesByFilters(isVegan, isSpecial);
+            if (filteredDishes.isEmpty()) {
+                return new ResponseMessage<>(
+                        null,
+                        ResultCode.FAIL,
+                        "По запросу ничего не найдено",
+                        ResultCode.FAIL.getHttpCode()
+                );
+            } else {
+                return new ResponseMessage<>(
+                        filteredDishes,
+                        ResultCode.SUCCESS,
+                        "По запросу получены блюда",
+                        ResultCode.SUCCESS.getHttpCode()
+                );
+            }
+        } catch (Exception exception) {
+            log.error("DishController: getDishesByFilters", exception);
+            return new ResponseMessage<>(
+                    null,
+                    ResultCode.FAIL,
+                    exception.getMessage(),
+                    ResultCode.FAIL.getHttpCode()
+            );
+        }
     }
 }
