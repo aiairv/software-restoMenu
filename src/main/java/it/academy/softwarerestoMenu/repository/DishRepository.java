@@ -18,6 +18,7 @@ public interface DishRepository extends JpaRepository<Dish, Long> {
     List<Dish> findByIsPublishTrue();
 
     List<Dish> findAllByRemoveDateTimeIsNull();
+    Dish getDishById(Long id);
 
 
 //    @Query("SELECT d FROM Dish d " +
