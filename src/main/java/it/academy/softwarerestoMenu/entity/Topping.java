@@ -1,9 +1,7 @@
 package it.academy.softwarerestoMenu.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,6 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "toppings")
+@Getter
+@Setter
 public class Topping {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

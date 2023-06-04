@@ -3,16 +3,14 @@ package it.academy.softwarerestoMenu.dto;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class CartItemDto {
+@Builder
+public class ToppingDtoForCartItem {
     private String name;
     private BigDecimal price;
-    private List<ToppingDtoForCartItem> toppings;
 }

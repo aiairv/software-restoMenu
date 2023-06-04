@@ -1,6 +1,8 @@
 package it.academy.softwarerestoMenu.services;
 
 import it.academy.softwarerestoMenu.dto.CartItemDto;
+import it.academy.softwarerestoMenu.dto.ToppingDTO;
+import it.academy.softwarerestoMenu.dto.ToppingDtoForCartItem;
 import it.academy.softwarerestoMenu.entity.Cart;
 import it.academy.softwarerestoMenu.entity.Dish;
 import it.academy.softwarerestoMenu.entity.Topping;
@@ -21,6 +23,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+
 public class    CartService {
     private CartRepository cartRepository;
     private UserRepository userRepository;
@@ -123,8 +126,20 @@ public class    CartService {
             cartItem.setName(dish.getName());
             cartItem.setPrice(dish.getPrice());
             cartItems.add(cartItem);
-        }
 
-        return cartItems;
+        List<Topping> toppings = dish.getToppings();
+        List<ToppingDtoForCartItem> toppingDTOs = new ArrayList<>();
+        for (Topping topping : toppings) {
+            ToppingDtoForCartItem toppingDTO = new ToppingDtoForCartItem();
+            toppingDTO.setName(topping.getName());
+            toppingDTO.setPrice(topping.getPrice());
+            toppingDTOs.add(toppingDTO);
+        }
+        cartItem.setToppings(toppingDTOs);
+
+        cartItems.add(cartItem);
+    }
+
+    return cartItems;
     }
 }
