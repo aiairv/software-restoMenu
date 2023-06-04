@@ -22,8 +22,4 @@ public class DishMapper {
         return modelMapper.map(dish, DishDTO.class);
     }
 
-
-    public Object map(DishDTOforFilter dishDTOforFilter) {
-        return modelMapper.map(dishDTOforFilter, Dish.class);
-    }
 }

@@ -19,15 +19,18 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime orderTime=LocalDateTime.now();
+    private LocalDateTime orderTime = LocalDateTime.now();
+
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+
     @OneToMany
-    @JoinColumn(name = "dish_id")
-    private List<Dish> dishes;
-    @OneToMany
-    @JoinColumn(name = "topping_id")
-    private List<Topping> toppings;
+    @JoinColumn(name = "order_id")
+    private List<OrderItem> orderItems;
+
+    @OneToOne
+    private Payment payment;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

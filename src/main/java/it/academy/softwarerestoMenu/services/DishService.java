@@ -69,7 +69,6 @@ public class DishService {
         List<IngredientDTO> ingredientDTOs = new ArrayList<>();
         for (Ingredient ingredient : ingredients) {
             IngredientDTO ingredientDTO = new IngredientDTO();
-//            ingredientDTO.setId(ingredient.getId());
             ingredientDTO.setName(ingredient.getName());
             ingredientDTOs.add(ingredientDTO);
         }
@@ -80,7 +79,6 @@ public class DishService {
         List<ToppingDTO> toppingDTOs = new ArrayList<>();
         for (Topping topping : toppings) {
             ToppingDTO toppingDTO = new ToppingDTO();
-//            toppingDTO.setId(topping.getId());
             toppingDTO.setName(topping.getName());
             toppingDTOs.add(toppingDTO);
         }
@@ -98,6 +96,7 @@ public class DishService {
         }
         return mapperToDto(dish);
     }
+
     public Long delete(Long id) {
         Dish dish = dishRepository.findById(id).orElseThrow(() -> new DishNotFoundException("Блюдо не найдено"));
         dish.setRemoveDateTime(LocalDateTime.now());
