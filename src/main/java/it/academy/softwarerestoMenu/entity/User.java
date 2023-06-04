@@ -28,5 +28,7 @@ public class User {
 
     @OneToMany()
     private List<Order> orders;
+    @OneToOne()
+    private Cart cart;
 
 }
