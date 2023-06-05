@@ -5,13 +5,12 @@ import it.academy.softwarerestoMenu.entity.Category;
 import it.academy.softwarerestoMenu.entity.Dish;
 import it.academy.softwarerestoMenu.entity.Ingredient;
 import it.academy.softwarerestoMenu.entity.Topping;
-import it.academy.softwarerestoMenu.exceptions.CategoryNotFoundException;
 import it.academy.softwarerestoMenu.exceptions.DishNotFoundException;
+import it.academy.softwarerestoMenu.exceptions.IngredientNotFoundException;
 import it.academy.softwarerestoMenu.mappers.DishMapper;
 import it.academy.softwarerestoMenu.repository.CategoryRepository;
 import it.academy.softwarerestoMenu.repository.DishRepository;
 import it.academy.softwarerestoMenu.repository.IngredientRepository;
-import it.academy.softwarerestoMenu.repository.ToppingRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +31,9 @@ public class DishService {
     private IngredientRepository ingredientRepository;
 
     public DishResponseDTO save(DishDTO dishDTO) {
+        if (dishRepository.findByName(dishDTO.getName()).isPresent()) {
+            throw new IngredientNotFoundException(String.format("Ингредиент с названием %s уже существует", dishDTO.getName()));
+        }
         Dish dish = dishMapper.map(dishDTO);
 
         Category category = categoryRepository.findById(dishDTO.getCategoryId()).orElse(null);
@@ -104,10 +106,11 @@ public class DishService {
         return dish.getId();
     }
 
-    public List<DishDTOforFilter> findAll() {
+    public List<DishDtoForFilter> findAll() {
+
         List<Dish> dishes = dishRepository.findAllByRemoveDateTimeIsNull();
         return dishes.stream()
-                .map(d -> new DishDTOforFilter(d.getName(), d.getDescription(), d.getPrice()))
+                .map(d -> new DishDtoForFilter(d.getName(), d.getDescription(), d.getPrice()))
                 .collect(Collectors.toList());
     }
 
@@ -118,19 +121,19 @@ public class DishService {
                 .collect(Collectors.toList());
     }
 
-    public Map<String, List<DishDTOforFilter>> getAllPublishedDishesGroupedByCategory() {
+    public Map<String, List<DishDtoForFilter>> getAllPublishedDishesGroupedByCategory() {
         List<Dish> publishedDishes = dishRepository.findByIsPublishTrue();
         Map<Category, List<Dish>> dishesByCategory = publishedDishes.stream()
                 .collect(Collectors.groupingBy(Dish::getCategory));
 
-        Map<String, List<DishDTOforFilter>> getListMap = new HashMap<>();
+        Map<String, List<DishDtoForFilter>> getListMap = new HashMap<>();
 
         for (Map.Entry<Category, List<Dish>> entry : dishesByCategory.entrySet()) {
             Category category = entry.getKey();
             List<Dish> dishes = entry.getValue();
 
-            List<DishDTOforFilter> dishDTOs = dishes.stream()
-                    .map(d -> new DishDTOforFilter(d.getName(), d.getDescription(), d.getPrice()))
+            List<DishDtoForFilter> dishDTOs = dishes.stream()
+                    .map(d -> new DishDtoForFilter(d.getName(), d.getDescription(), d.getPrice()))
                     .collect(Collectors.toList());
 
             getListMap.put(category.getName(), dishDTOs);
@@ -139,11 +142,11 @@ public class DishService {
         return getListMap;
     }
 
-    public List<DishDTOforFilter> getDishesByFilters(boolean isVegan, boolean isSpecial) {
+    public List<DishDtoForFilter> getDishesByFilters(boolean isVegan, boolean isSpecial) {
         List<Dish> dishes = dishRepository.findDishesByFilters(isVegan, isSpecial);
 
         return dishes.stream()
-                .map(d -> new DishDTOforFilter(d.getName(), d.getDescription(), d.getPrice()))
+                .map(d -> new DishDtoForFilter(d.getName(), d.getDescription(), d.getPrice()))
                 .collect(Collectors.toList());
     }
     public DishResponseDTO update(Long dishId, DishDTO dishDTO) {
