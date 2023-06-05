@@ -1,9 +1,11 @@
 package it.academy.softwarerestoMenu.repository;
 
 import it.academy.softwarerestoMenu.entity.Cart;
+import it.academy.softwarerestoMenu.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BasketRepository extends JpaRepository<Cart,Long> {
+public interface CartRepository extends JpaRepository<Cart,Long> {
+    Cart findByUser(User user);
 }

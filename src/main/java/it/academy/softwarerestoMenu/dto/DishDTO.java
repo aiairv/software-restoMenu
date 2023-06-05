@@ -24,6 +24,5 @@ public class DishDTO {
     private Boolean isPublish;
     private Long categoryId;
     private List<Long> ingredientIds;
-    private List<Long> toppingIds;
 
 }

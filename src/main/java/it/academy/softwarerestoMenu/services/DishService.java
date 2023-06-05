@@ -5,6 +5,7 @@ import it.academy.softwarerestoMenu.entity.Category;
 import it.academy.softwarerestoMenu.entity.Dish;
 import it.academy.softwarerestoMenu.entity.Ingredient;
 import it.academy.softwarerestoMenu.entity.Topping;
+import it.academy.softwarerestoMenu.exceptions.CategoryNotFoundException;
 import it.academy.softwarerestoMenu.exceptions.DishNotFoundException;
 import it.academy.softwarerestoMenu.mappers.DishMapper;
 import it.academy.softwarerestoMenu.repository.CategoryRepository;
@@ -29,20 +30,15 @@ public class DishService {
     private final DishMapper dishMapper;
     private CategoryRepository categoryRepository;
     private IngredientRepository ingredientRepository;
-    private ToppingRepository toppingRepository;
 
     public DishResponseDTO save(DishDTO dishDTO) {
         Dish dish = dishMapper.map(dishDTO);
 
-        // Загрузка категории, ингредиентов и топпингов по их идентификаторам
         Category category = categoryRepository.findById(dishDTO.getCategoryId()).orElse(null);
         List<Ingredient> ingredients = ingredientRepository.findAllById(dishDTO.getIngredientIds());
-        List<Topping> toppings = toppingRepository.findAllById(dishDTO.getToppingIds());
 
-        // Связывание объектов с блюдом
         dish.setCategory(category);
         dish.setIngredients(ingredients);
-        dish.setToppings(toppings);
 
         Dish createdDish = dishRepository.save(dish);
         return mapperToDto(createdDish);
@@ -64,7 +60,6 @@ public class DishService {
                         .isPublish(dish.getCategory().getIsPublish())
                         .build())
                 .ingredients(convertIngredientToDTOList(dish.getIngredients()))
-                .toppings(convertToppingToDTOList(dish.getToppings()))
                 .build();
 
 
@@ -74,7 +69,6 @@ public class DishService {
         List<IngredientDTO> ingredientDTOs = new ArrayList<>();
         for (Ingredient ingredient : ingredients) {
             IngredientDTO ingredientDTO = new IngredientDTO();
-            ingredientDTO.setId(ingredient.getId());
             ingredientDTO.setName(ingredient.getName());
             ingredientDTOs.add(ingredientDTO);
         }
@@ -85,7 +79,6 @@ public class DishService {
         List<ToppingDTO> toppingDTOs = new ArrayList<>();
         for (Topping topping : toppings) {
             ToppingDTO toppingDTO = new ToppingDTO();
-            toppingDTO.setId(topping.getId());
             toppingDTO.setName(topping.getName());
             toppingDTOs.add(toppingDTO);
         }
@@ -96,20 +89,25 @@ public class DishService {
     public DishResponseDTO getById(Long dishId) {
         Dish dish = dishRepository.findById(dishId).orElse(null);
         if (dish == null) {
-            throw new DishNotFoundException("Dish not found");
+            throw new DishNotFoundException(String.format("Блюдо %s не найдено",dish.getName()));
+        }
+        if (dish.getRemoveDateTime() != null){
+            throw new DishNotFoundException(String.format("Блюдо %s в списке удаленных", dish.getName()));
         }
         return mapperToDto(dish);
     }
-    public void delete(Long id) {
-        Dish dish = dishRepository.findById(id).orElseThrow(() -> new DishNotFoundException("Dish not found"));
+
+    public Long delete(Long id) {
+        Dish dish = dishRepository.findById(id).orElseThrow(() -> new DishNotFoundException("Блюдо не найдено"));
         dish.setRemoveDateTime(LocalDateTime.now());
         dishRepository.save(dish);
+        return dish.getId();
     }
 
-    public List<DishResponseDTO> findAll() {
+    public List<DishDTOforFilter> findAll() {
         List<Dish> dishes = dishRepository.findAllByRemoveDateTimeIsNull();
         return dishes.stream()
-                .map(this::mapperToDto)
+                .map(d -> new DishDTOforFilter(d.getName(), d.getDescription(), d.getPrice()))
                 .collect(Collectors.toList());
     }
 
@@ -141,22 +139,33 @@ public class DishService {
         return getListMap;
     }
 
-    public List<Dish> getDishesByFilters(boolean isVegan, boolean isSpecial) {
-        return dishRepository.findDishesByFilters(isVegan, isSpecial);
+    public List<DishDTOforFilter> getDishesByFilters(boolean isVegan, boolean isSpecial) {
+        List<Dish> dishes = dishRepository.findDishesByFilters(isVegan, isSpecial);
+
+        return dishes.stream()
+                .map(d -> new DishDTOforFilter(d.getName(), d.getDescription(), d.getPrice()))
+                .collect(Collectors.toList());
     }
     public DishResponseDTO update(Long dishId, DishDTO dishDTO) {
-        Dish existingDish = dishRepository.findById(dishId).orElseThrow(() -> new DishNotFoundException("Dish not found with ID: " + dishId));
-
+        Dish existingDish = dishRepository.findById(dishId).orElseThrow(() -> new DishNotFoundException("Блюдо не найдено с ID: " + dishId));
+        if (existingDish.getRemoveDateTime() != null) {
+            {
+                throw new DishNotFoundException(String.format("Блюдо %s в списке удаленных", existingDish.getName()));
+            }
+        }
         existingDish.setName(dishDTO.getName());
+        existingDish.setDescription(dishDTO.getDescription());
+        existingDish.setIsPublish(dishDTO.getIsPublish());
+        existingDish.setIsVegan(dishDTO.getIsVegan());
+        existingDish.setIsSpecial(dishDTO.getIsSpecial());
         existingDish.setPrice(dishDTO.getPrice());
+        existingDish.setUpdateDateTime(LocalDateTime.now());
 
         Category category = categoryRepository.findById(dishDTO.getCategoryId()).orElse(null);
         List<Ingredient> ingredients = ingredientRepository.findAllById(dishDTO.getIngredientIds());
-        List<Topping> toppings = toppingRepository.findAllById(dishDTO.getToppingIds());
 
         existingDish.setCategory(category);
         existingDish.setIngredients(ingredients);
-        existingDish.setToppings(toppings);
 
         Dish updatedDish = dishRepository.save(existingDish);
         return mapperToDto(updatedDish);

@@ -2,6 +2,8 @@ package it.academy.softwarerestoMenu.dto;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -9,6 +11,6 @@ import lombok.*;
 @Setter
 @Builder
 public class ToppingDTO {
-    private Long id;
     private String name;
+    private BigDecimal price;
 }

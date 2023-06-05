@@ -20,6 +20,5 @@ public class DishResponseDTO {
     private Boolean isPublish;
     private CategoryDTO category;
     private List<IngredientDTO> ingredients;
-    private List<ToppingDTO> toppings;
 
 }

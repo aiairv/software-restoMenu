@@ -17,7 +17,7 @@
 //    public Docket api() { // http://localhost:9090/swagger-ui/index.html
 //        return new Docket(DocumentationType.SWAGGER_2)
 //                .select()
-//                .apis(RequestHandlerSelectors.basePackage("it.academy.softwarerestoMenu"))
+//                .apis(RequestHandlerSelectors.basePackage("it.academy.softwarerestoMenu.controller"))
 //                .paths(PathSelectors.any())
 //                .build();
 //    }

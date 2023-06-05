@@ -1,7 +1,7 @@
 package it.academy.softwarerestoMenu.services;
 
 import it.academy.softwarerestoMenu.entity.Ingredient;
-import it.academy.softwarerestoMenu.exceptions.CategoryNotFoundException;
+import it.academy.softwarerestoMenu.exceptions.IngredientNotFoundException;
 import it.academy.softwarerestoMenu.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,22 +16,41 @@ public class IngredientService {
     private IngredientRepository repository;
 
     public Ingredient create(Ingredient ingredient) {
+        if (repository.findByName(ingredient.getName()).isPresent()) {
+            throw new IngredientNotFoundException(String.format("Ингредиент с названием %s уже существует", ingredient.getName()));
+        }
         return repository.save(ingredient);
     }
 
     public Ingredient getById(Long id) {
-        return repository.findById(id).orElseThrow(
-                () -> new CategoryNotFoundException(String.format("Ingredient with id %s not found", id)));
+        Ingredient ingredient = repository.findById(id).orElseThrow(null);
+        if (ingredient == null) {
+            throw new IngredientNotFoundException(String.format("Ингредиент %s не найдено",ingredient.getName()));
+        }
+        if (ingredient.getRemoveDateTime() != null){
+            throw new IngredientNotFoundException(String.format("Ингредиент %s в списке удаленных", ingredient.getName()));
+        }
+        return ingredient;
     }
 
-    public void delete(Long id) {
+    public Long delete(Long id) {
         var ingredient = getById(id);
         ingredient.setRemoveDateTime(LocalDateTime.now());
-        create(ingredient);
+        repository.save(ingredient);
+        return ingredient.getId();
     }
 
     public List<Ingredient> findAll() {
         return repository.findAllByRemoveDateTimeIsNull();
+    }
+    public Ingredient restore(Long id) {
+        Ingredient ingredient= repository.findById(id)
+                .orElseThrow(() -> new IngredientNotFoundException(String.format("Ингредиент с id %s не найден", id)));
+        if (ingredient.getRemoveDateTime() == null) {
+            throw new IngredientNotFoundException(String.format("Ингредиент с id %s не удален", id));
+        }
+        ingredient.setRemoveDateTime(null);
+        return repository.save(ingredient);
     }
 }
 
