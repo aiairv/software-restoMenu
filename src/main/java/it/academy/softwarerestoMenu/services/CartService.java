@@ -31,7 +31,7 @@ public class    CartService {
     private ToppingRepository toppingRepository;
 
     public String addDishToCart(Long userId, Long dishId) {
-        User user = userRepository.getUserById(userId);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Cart cart = user.getCart();
         if (cart == null) {
             cart = new Cart();
@@ -54,7 +54,7 @@ public class    CartService {
             User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
             Cart cart = user.getCart();
             if (cart == null) {
-                throw  new RuntimeException("Корзина не существует");
+                throw  new RuntimeException("Корзины не существует");
             }
 
             List<Dish> dishes = cart.getDishes();
@@ -81,36 +81,36 @@ public class    CartService {
             return "Блюдо удалено из корзины";
         }
 
-        public void addToppingToDishInCart(Long cartId, Long dishId, Long toppingId) {
-            Cart cart = cartRepository.findById(cartId)
-                    .orElseThrow(() -> new CartNotFoundException("Корзина не найдена"));
-
-            Dish dish = cart.getDishes().stream()
-                    .filter(d -> d.getId().equals(dishId))
-                    .findFirst()
-                    .orElseThrow(() -> new DishNotFoundException("Блюдо не найдено в корзине"));
-
-            Topping topping = toppingRepository.findById(toppingId)
-                    .orElseThrow(() -> new ToppingNotFoundException("Топпинг не найден"));
-
-            dish.getToppings().add(topping);
-
-            cartRepository.save(cart);
-        }
-    public void removeToppingFromDishInCart(Long cartId, Long dishId, Long toppingId) {
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new CartNotFoundException("Корзина не найдена"));
-
-        Dish dish = cart.getDishes().stream()
-                .filter(d -> d.getId().equals(dishId))
-                .findFirst()
-                .orElseThrow(() -> new DishNotFoundException("Блюдо не найдено в корзине"));
-
-        List<Topping> toppings = dish.getToppings();
-        toppings.removeIf(t -> t.getId().equals(toppingId));
-
-        cartRepository.save(cart);
-    }
+//        public void addToppingToDishInCart(Long cartId, Long dishId, Long toppingId) {
+//            Cart cart = cartRepository.findById(cartId)
+//                    .orElseThrow(() -> new CartNotFoundException("Корзина не найдена"));
+//
+//            Dish dish = cart.getDishes().stream()
+//                    .filter(d -> d.getId().equals(dishId))
+//                    .findFirst()
+//                    .orElseThrow(() -> new DishNotFoundException("Блюдо не найдено в корзине"));
+//
+//            Topping topping = toppingRepository.findById(toppingId)
+//                    .orElseThrow(() -> new ToppingNotFoundException("Топпинг не найден"));
+//
+//            dish.getToppings().add(topping);
+//
+//            cartRepository.save(cart);
+//        }
+//    public void removeToppingFromDishInCart(Long cartId, Long dishId, Long toppingId) {
+//        Cart cart = cartRepository.findById(cartId)
+//                .orElseThrow(() -> new CartNotFoundException("Корзина не найдена"));
+//
+//        Dish dish = cart.getDishes().stream()
+//                .filter(d -> d.getId().equals(dishId))
+//                .findFirst()
+//                .orElseThrow(() -> new DishNotFoundException("Блюдо не найдено в корзине"));
+//
+//        List<Topping> toppings = dish.getToppings();
+//        toppings.removeIf(t -> t.getId().equals(toppingId));
+//
+//        cartRepository.save(cart);
+//    }
     public List<CartItemDto> getAllDishesFromCart(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Cart cart = user.getCart();
@@ -119,23 +119,26 @@ public class    CartService {
         }
 
         List<Dish> dishes = cart.getDishes();
+        if (dishes.isEmpty()) {
+            throw new RuntimeException("Корзина пуста");
+        }
         List<CartItemDto> cartItems = new ArrayList<>();
+
 
         for (Dish dish : dishes) {
             CartItemDto cartItem = new CartItemDto();
             cartItem.setName(dish.getName());
             cartItem.setPrice(dish.getPrice());
-            cartItems.add(cartItem);
 
-        List<Topping> toppings = dish.getToppings();
-        List<ToppingDtoForCartItem> toppingDTOs = new ArrayList<>();
-        for (Topping topping : toppings) {
-            ToppingDtoForCartItem toppingDTO = new ToppingDtoForCartItem();
-            toppingDTO.setName(topping.getName());
-            toppingDTO.setPrice(topping.getPrice());
-            toppingDTOs.add(toppingDTO);
-        }
-        cartItem.setToppings(toppingDTOs);
+//        List<Topping> toppings = dish.getToppings();
+//        List<ToppingDtoForCartItem> toppingDTOs = new ArrayList<>();
+//        for (Topping topping : toppings) {
+//            ToppingDtoForCartItem toppingDTO = new ToppingDtoForCartItem();
+//            toppingDTO.setName(topping.getName());
+//            toppingDTO.setPrice(topping.getPrice());
+//            toppingDTOs.add(toppingDTO);
+//        }
+//        cartItem.setToppings(toppingDTOs);
 
         cartItems.add(cartItem);
     }

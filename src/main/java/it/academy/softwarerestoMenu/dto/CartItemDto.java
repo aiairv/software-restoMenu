@@ -14,5 +14,4 @@ import java.util.List;
 public class CartItemDto {
     private String name;
     private BigDecimal price;
-    private List<ToppingDtoForCartItem> toppings;
 }
