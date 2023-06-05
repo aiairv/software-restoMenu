@@ -45,30 +45,7 @@ public class CartController {
                     .body(null);
         }
     }
-    @PostMapping("/{cartId}/dish/{dishId}/topping/{toppingId}")
-    public ResponseEntity<String> addToppingToDishInCart(@PathVariable("cartId") Long cartId,
-                                                         @PathVariable("dishId") Long dishId,
-                                                         @PathVariable("toppingId") Long toppingId) {
-        try {
-            cartService.addToppingToDishInCart(cartId, dishId, toppingId);
-            return ResponseEntity.ok("Топпинг добавлен к блюду в корзине");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Произошла ошибка при добавлении топпинга к блюду в корзине");
-        }
-    }
-    @DeleteMapping("/{cartId}/dish/{dishId}/topping/{toppingId}")
-    public ResponseEntity<String> removeToppingFromDishInCart(@PathVariable("cartId") Long cartId,
-                                                              @PathVariable("dishId") Long dishId,
-                                                              @PathVariable("toppingId") Long toppingId) {
-        try {
-            cartService.removeToppingFromDishInCart(cartId, dishId, toppingId);
-            return ResponseEntity.ok("Топпинг удален из блюда в корзине");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Произошла ошибка при удалении топпинга из блюда в корзине");
-        }
-    }
+
     @GetMapping("/dishes")
     public ResponseEntity<ResponseCartDto> getAllDishesFromCart(@RequestParam("userId") Long userId) {
         try {
