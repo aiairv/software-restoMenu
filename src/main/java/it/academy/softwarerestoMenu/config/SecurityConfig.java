@@ -1,9 +1,11 @@
 package it.academy.softwarerestoMenu.config;
 
+import it.academy.softwarerestoMenu.enums.Role;
 import it.academy.softwarerestoMenu.services.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,7 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("category/**").hasRole("ADMIN")
                 .antMatchers("/login", "/register", "/activate", "/api/password/**").permitAll()
+//                .antMatchers(HttpMethod.POST,"/category/**").hasRole(Role.ROLE_ADMIN.toString())
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
