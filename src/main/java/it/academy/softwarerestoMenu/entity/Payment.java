@@ -20,6 +20,8 @@ public class Payment {
     private Long id;
     private BigDecimal amount;
 
+    @Column(name = "status")
+    private String status;
     @Column(name = "payment_date")
     private LocalDateTime paymentDateTime;
 

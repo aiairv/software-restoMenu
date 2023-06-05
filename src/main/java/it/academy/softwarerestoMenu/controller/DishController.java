@@ -1,18 +1,16 @@
 package it.academy.softwarerestoMenu.controller;
 
 import it.academy.softwarerestoMenu.dto.DishDTO;
-import it.academy.softwarerestoMenu.dto.DishDTOforFilter;
+import it.academy.softwarerestoMenu.dto.DishDtoForFilter;
 import it.academy.softwarerestoMenu.dto.DishResponseDTO;
 import it.academy.softwarerestoMenu.entity.Dish;
 import it.academy.softwarerestoMenu.entity.ResponseMessage;
 import it.academy.softwarerestoMenu.enums.ResultCode;
-import it.academy.softwarerestoMenu.exceptions.DishNotFoundException;
 import it.academy.softwarerestoMenu.mappers.DishMapper;
 import it.academy.softwarerestoMenu.services.DishService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,7 +58,7 @@ public class DishController {
     }
 
     @GetMapping("/all")
-    public List<DishDTOforFilter> getAllDishes() {
+    public List<DishDtoForFilter> getAllDishes() {
         return dishService.findAll();
     }
 
@@ -107,16 +105,16 @@ public class DishController {
     }
 
     @GetMapping("/published")
-    public Map<String, List<DishDTOforFilter>> getPublishedDishesGroupedByCategory() {
+    public Map<String, List<DishDtoForFilter>> getPublishedDishesGroupedByCategory() {
         return dishService.getAllPublishedDishesGroupedByCategory();
     }
 
     @GetMapping("/filter")
-    public ResponseMessage<List<DishDTOforFilter>> getDishesByFilters(
+    public ResponseMessage<List<DishDtoForFilter>> getDishesByFilters(
             @RequestParam(name = "isVegan", defaultValue = "false") boolean isVegan,
             @RequestParam(name = "isSpecial", defaultValue = "false") boolean isSpecial) {
         try {
-            List<DishDTOforFilter> filteredDishes = dishService.getDishesByFilters(isVegan, isSpecial);
+            List<DishDtoForFilter> filteredDishes = dishService.getDishesByFilters(isVegan, isSpecial);
             if (filteredDishes.isEmpty()) {
                 return new ResponseMessage<>(
                         null,
