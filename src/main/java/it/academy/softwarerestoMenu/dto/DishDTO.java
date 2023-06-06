@@ -1,11 +1,8 @@
 package it.academy.softwarerestoMenu.dto;
 
-import it.academy.softwarerestoMenu.entity.Ingredient;
-import it.academy.softwarerestoMenu.entity.Topping;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data

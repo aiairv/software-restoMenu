@@ -9,7 +9,6 @@ import it.academy.softwarerestoMenu.enums.CartStatus;
 import it.academy.softwarerestoMenu.exceptions.UserNotFoundException;
 import it.academy.softwarerestoMenu.repository.CartRepository;
 import it.academy.softwarerestoMenu.repository.DishRepository;
-import it.academy.softwarerestoMenu.repository.ToppingRepository;
 import it.academy.softwarerestoMenu.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,6 @@ public class CartService {
     private CartRepository cartRepository;
     private UserRepository userRepository;
     private DishRepository dishRepository;
-    private ToppingRepository toppingRepository;
 
     public ResponseCartDto addDishToCart(Long userId, Long dishId) {
         User user = userRepository.getUserById(userId);

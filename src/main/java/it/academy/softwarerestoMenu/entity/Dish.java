@@ -39,10 +39,6 @@ import java.util.List;
     @JoinTable(name = "dish_ingredients", joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
     private List<Ingredient> ingredients;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "dish_toppings", joinColumns = @JoinColumn(name = "dish_id"),
-            inverseJoinColumns = @JoinColumn(name = "topping_id"))
-    private List<Topping> toppings;
     LocalDateTime createDataTime = LocalDateTime.now();
     LocalDateTime removeDateTime;
     LocalDateTime updateDateTime = LocalDateTime.now();

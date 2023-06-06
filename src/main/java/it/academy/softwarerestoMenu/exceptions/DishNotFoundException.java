@@ -3,7 +3,7 @@ package it.academy.softwarerestoMenu.exceptions;
 public class DishNotFoundException extends RuntimeException {
 
     public DishNotFoundException() {
-        super("Dish not found!");
+        super("Блюдо не найдено!");
     }
 
     public DishNotFoundException(String message) {

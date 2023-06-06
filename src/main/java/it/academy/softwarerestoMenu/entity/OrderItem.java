@@ -18,8 +18,4 @@ public class OrderItem {
     @ManyToOne
     private Dish dish;
 
-    @ManyToOne
-    private Topping topping;
-
-
 }

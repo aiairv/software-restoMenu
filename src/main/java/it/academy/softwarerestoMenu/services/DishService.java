@@ -4,7 +4,6 @@ import it.academy.softwarerestoMenu.dto.*;
 import it.academy.softwarerestoMenu.entity.Category;
 import it.academy.softwarerestoMenu.entity.Dish;
 import it.academy.softwarerestoMenu.entity.Ingredient;
-import it.academy.softwarerestoMenu.entity.Topping;
 import it.academy.softwarerestoMenu.exceptions.DishNotFoundException;
 import it.academy.softwarerestoMenu.exceptions.IngredientNotFoundException;
 import it.academy.softwarerestoMenu.mappers.DishMapper;
@@ -75,16 +74,6 @@ public class DishService {
             ingredientDTOs.add(ingredientDTO);
         }
         return ingredientDTOs;
-    }
-
-    public List<ToppingDTO> convertToppingToDTOList(List<Topping> toppings) {
-        List<ToppingDTO> toppingDTOs = new ArrayList<>();
-        for (Topping topping : toppings) {
-            ToppingDTO toppingDTO = new ToppingDTO();
-            toppingDTO.setName(topping.getName());
-            toppingDTOs.add(toppingDTO);
-        }
-        return toppingDTOs;
     }
 
 

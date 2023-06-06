@@ -1,6 +1,5 @@
 package it.academy.softwarerestoMenu.controller;
 
-import it.academy.softwarerestoMenu.dto.CartItemDto;
 import it.academy.softwarerestoMenu.dto.ResponseCartDto;
 import it.academy.softwarerestoMenu.exceptions.CartNotFoundException;
 import it.academy.softwarerestoMenu.exceptions.UserNotFoundException;
@@ -8,8 +7,6 @@ import it.academy.softwarerestoMenu.services.CartService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/cart")
