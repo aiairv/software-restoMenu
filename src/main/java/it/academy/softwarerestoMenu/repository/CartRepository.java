@@ -13,4 +13,6 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     Optional<Cart> findByUser(User user);
 
     Optional<Cart> findByUserAndStatusAndRemoveDateTimeIsNull(User user, CartStatus status);
+
+    Optional<Cart> findByIdAndRemoveDateTimeIsNull (Long id);
 }

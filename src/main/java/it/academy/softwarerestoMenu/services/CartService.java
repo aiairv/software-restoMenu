@@ -6,10 +6,10 @@ import it.academy.softwarerestoMenu.entity.Cart;
 import it.academy.softwarerestoMenu.entity.Dish;
 import it.academy.softwarerestoMenu.entity.User;
 import it.academy.softwarerestoMenu.enums.CartStatus;
+import it.academy.softwarerestoMenu.exceptions.CartNotFoundException;
 import it.academy.softwarerestoMenu.exceptions.UserNotFoundException;
 import it.academy.softwarerestoMenu.repository.CartRepository;
 import it.academy.softwarerestoMenu.repository.DishRepository;
-import it.academy.softwarerestoMenu.repository.ToppingRepository;
 import it.academy.softwarerestoMenu.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,12 +24,21 @@ public class CartService {
     private CartRepository cartRepository;
     private UserRepository userRepository;
     private DishRepository dishRepository;
-    private ToppingRepository toppingRepository;
+
+    public  Cart findById(Long id) {
+        return cartRepository.findByIdAndRemoveDateTimeIsNull(id).orElseThrow(CartNotFoundException::new);
+    }
+
+    public Cart save (Cart cart) {
+        return cartRepository.save(cart);
+    }
 
     public ResponseCartDto addDishToCart(Long userId, Long dishId) {
         User user = userRepository.getUserById(userId);
 
         var cart = cartRepository.findByUserAndStatusAndRemoveDateTimeIsNull(user, CartStatus.NEW);
+
+        Long cartId = null;
 
         if (cart.isPresent()) {
 //            cartSave = cart.get();
@@ -45,7 +54,7 @@ public class CartService {
             cart.get().setStatus(CartStatus.NEW);
             cart.get().setTotal(totalSum);
 
-            cartRepository.save(cart.get());
+            cartId = cartRepository.save(cart.get()).getId();
         } else {
             var cartSave = new Cart();
             Dish dish = dishRepository.getDishById(dishId);
@@ -55,11 +64,11 @@ public class CartService {
             cartSave.setDishes(dishes);
             cartSave.setStatus(CartStatus.NEW);
             cartSave.setTotal(dish.getPrice());
-            cartRepository.save(cartSave);
+            cartId = cartRepository.save(cartSave).getId();
 
         }
 
-        return getAllDishesFromCart(userId);
+        return getAllDishesFromCart(cartId);
     }
 
 
@@ -68,6 +77,7 @@ public class CartService {
 
         var cart = cartRepository.findByUserAndStatusAndRemoveDateTimeIsNull(user, CartStatus.NEW);
 
+        Long cartId = null;
         if (cart.isPresent()) {
 //            cartSave = cart.get();
 
@@ -94,14 +104,14 @@ public class CartService {
             dishes.remove(dishToRemove);
             cart.get().setDishes(dishes);
 
-            cartRepository.save(cart.get());
+            cartId = cartRepository.save(cart.get()).getId();
         }
-        return getAllDishesFromCart(userId);
+
+        return getAllDishesFromCart(cartId);
     }
 
-    public ResponseCartDto getAllDishesFromCart(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        var cart = cartRepository.findByUserAndStatusAndRemoveDateTimeIsNull(user, CartStatus.NEW);
+    public ResponseCartDto getAllDishesFromCart(Long cartId) {
+        var cart = cartRepository.findById(cartId);
 
         var cartDto = new ResponseCartDto();
         if (cart.isPresent()) {

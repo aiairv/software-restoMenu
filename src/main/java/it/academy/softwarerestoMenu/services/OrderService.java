@@ -1,79 +1,83 @@
 package it.academy.softwarerestoMenu.services;
 
 import it.academy.softwarerestoMenu.dto.OrderDTO;
-import it.academy.softwarerestoMenu.dto.OrderRequestDTO;
+import it.academy.softwarerestoMenu.dto.OrderResponseDTO;
 import it.academy.softwarerestoMenu.entity.Cart;
 import it.academy.softwarerestoMenu.entity.Order;
-import it.academy.softwarerestoMenu.entity.User;
+import it.academy.softwarerestoMenu.enums.CartStatus;
+import it.academy.softwarerestoMenu.enums.OrderStatus;
+import it.academy.softwarerestoMenu.enums.PaymentEnum;
+import it.academy.softwarerestoMenu.enums.Place;
 import it.academy.softwarerestoMenu.exceptions.OrderNotFoundException;
-import it.academy.softwarerestoMenu.exceptions.UserNotFoundException;
-import it.academy.softwarerestoMenu.mappers.OrderMapper;
-import it.academy.softwarerestoMenu.repository.CartRepository;
 import it.academy.softwarerestoMenu.repository.OrderRepository;
-import it.academy.softwarerestoMenu.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
 public class OrderService {
     private OrderRepository orderRepository;
-    private UserRepository userRepository;
-    private CartRepository cartRepository;
+    private CartService cartService;
     private PaymentService paymentService;
-    private OrderMapper orderMapper;
 
-    public void createOrder(OrderRequestDTO orderRequestDTO) {
-        User user = userRepository.findById(orderRequestDTO.getUserId())
-                .orElseThrow(UserNotFoundException::new);
+    @Transactional
+    public OrderResponseDTO createOrder(Long cartId, String comment, Place place) {
+        Cart cart = cartService.findById(cartId);
+        cart.setComment(comment);
+        cart.setPlace(place);
+        cart.setStatus(CartStatus.CLOSED);
+        cart = cartService.save(cart);
 
-        Cart cart = cartRepository.findByUser(user)
-                .orElseThrow();
+        Order order = new Order();
+        order.setOrderTime(LocalDateTime.now());
+        order.setOrderStatus(OrderStatus.NEW);
+        order.setCart(cart);
+        var saveOrder = orderRepository.save(order);
+        return mapFromEntity(saveOrder.getId());
+    }
 
-/*        Order order = new Order();
-        order.setUser(user);
-        order.setDishes(cart.getDishes());
-        order.setToppings(cart.getToppings());
+    public OrderResponseDTO choicePayment(Long orderId, PaymentEnum paymentEnum) {
+       var order = orderRepository.findByIdAndOrderStatus(orderId, OrderStatus.NEW).orElseThrow(OrderNotFoundException::new);
+       order.setPaymentEnum(paymentEnum);
 
-        PaymentDTO paymentDTO = new PaymentDTO();
-        paymentDTO.setOrderId(order.getId());
-        paymentDTO.setAmount(order.getTotalAmount());
-        paymentDTO.setPaymentMethod(orderRequestDTO.getPaymentMethod());
+       if (PaymentEnum.CASH == paymentEnum) order.setOrderStatus(OrderStatus.PAID);
+       else order.setOrderStatus(OrderStatus.PENDING);
 
-        paymentService.processPayment(paymentDTO);*/
+       orderRepository.save(order);
 
-//        orderRepository.save(order);
+        return mapFromEntity(order.getId());
+    }
+
+    public OrderResponseDTO payment(Long orderId, String cardNumber, String cvv, String expiredDate) {
+        var order = orderRepository.findByIdAndOrderStatus(orderId, OrderStatus.PENDING).orElseThrow(OrderNotFoundException::new);
+        order.setOrderStatus(OrderStatus.PAID);
+        orderRepository.save(order);
+        return mapFromEntity(order.getId());
+    }
+
+
+
+    OrderResponseDTO mapFromEntity(Long orderId) {
+        var order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        var cart = order.getCart();
+        return OrderResponseDTO.builder()
+                .id(order.getId())
+                .orderTime(order.getOrderTime())
+                .orderStatus(order.getOrderStatus())
+                .dishes(cartService.getAllDishesFromCart(cart.getId()))
+                .build();
     }
 
     public OrderDTO getOrderById(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(OrderNotFoundException::new);
-
-//        return orderMapper.mapperToDto(order);
         return null;
     }
 
-    public OrderDTO mapperToDto(Order order) {
-        return OrderDTO.builder()
-                .id(order.getId())
-                .orderStatus(order.getOrderStatus())
-//                .dishes(order.getOrderItems())
-                .build();
-    }
 
-    public List<OrderDTO> convertToppingToDTOList(List<Order> orders) {
-        List<OrderDTO> orderDTOS = new ArrayList<>();
-        for (Order order : orders) {
-            OrderDTO orderDTO = new OrderDTO();
-            orderDTO.setUser(order.getUser());
-//            orderDTO.getOrderStatus(order.getOrderStatus())
-            orderDTOS.add(orderDTO);
-        }
-        return orderDTOS;
-    }
 }
 
 

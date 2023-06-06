@@ -1,10 +1,10 @@
 package it.academy.softwarerestoMenu.enums;
 
 public enum OrderStatus {
-    PLACED,
+    NEW,
+    PENDING,
+    PAID,
     PROCESSING,
     COMPLETED,
     CANCELLED;
-
-
 }
