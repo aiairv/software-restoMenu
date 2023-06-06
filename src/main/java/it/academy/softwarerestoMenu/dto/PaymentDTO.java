@@ -1,9 +1,9 @@
 package it.academy.softwarerestoMenu.dto;
 
-import jdk.jshell.Snippet;
 import lombok.*;
 
 import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface IngredientRepository extends JpaRepository<Ingredient,Long> {
+public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     List<Ingredient> findAllByRemoveDateTimeIsNull();
 
     Optional<Ingredient> findByName(String name);

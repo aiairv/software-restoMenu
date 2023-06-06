@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ToppingRepository extends JpaRepository<Topping,Long> {
+public interface ToppingRepository extends JpaRepository<Topping, Long> {
     List<Topping> findAllByRemoveDateTimeIsNull();
 
     Optional<Object> findByName(String name);

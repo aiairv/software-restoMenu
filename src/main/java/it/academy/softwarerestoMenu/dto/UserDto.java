@@ -4,6 +4,7 @@ import it.academy.softwarerestoMenu.entity.Order;
 import lombok.Data;
 
 import java.util.List;
+
 @Data
 public class UserDto {
     private Long id;

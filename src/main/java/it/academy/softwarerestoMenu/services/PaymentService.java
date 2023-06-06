@@ -14,7 +14,7 @@ public class PaymentService {
 
     public PaymentDTO processPayment(Long paymentId) {
         Payment payment = paymentRepository.findById(paymentId)
-                .orElseThrow(()-> new PaymentNotFoundException("Платеж не найден с ID: " + paymentId));
+                .orElseThrow(() -> new PaymentNotFoundException("Платеж не найден с ID: " + paymentId));
         payment.setStatus("Processed");
         paymentRepository.save(payment);
 

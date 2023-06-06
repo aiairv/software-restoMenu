@@ -1,12 +1,11 @@
 package it.academy.softwarerestoMenu.controller;
 
 import it.academy.softwarerestoMenu.dto.ToppingDTO;
-import it.academy.softwarerestoMenu.entity.Ingredient;
 import it.academy.softwarerestoMenu.entity.ResponseMessage;
 import it.academy.softwarerestoMenu.entity.Topping;
+import it.academy.softwarerestoMenu.enums.ResultCode;
 import it.academy.softwarerestoMenu.exceptions.ToppingNotFoundException;
 import it.academy.softwarerestoMenu.services.ToppingService;
-import it.academy.softwarerestoMenu.enums.ResultCode;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -42,6 +41,7 @@ public class ToppingController {
             );
         }
     }
+
     @PostMapping("/{id}/restore")
     public ResponseMessage<Topping> restore(@PathVariable Long id) {
         try {

@@ -1,16 +1,13 @@
 package it.academy.softwarerestoMenu.services;
 
 import it.academy.softwarerestoMenu.dto.CategoryDTO;
-import it.academy.softwarerestoMenu.dto.ToppingDTO;
-import it.academy.softwarerestoMenu.entity.Topping;
-import it.academy.softwarerestoMenu.exceptions.CategoryNotFoundException;
 import it.academy.softwarerestoMenu.entity.Category;
+import it.academy.softwarerestoMenu.exceptions.CategoryNotFoundException;
 import it.academy.softwarerestoMenu.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,6 +22,7 @@ public class CategoryService {
         }
         return repository.save(category);
     }
+
     public Category restoreCategory(Long id) {
         Category category = repository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException(String.format("Категория с id %s не найден", id)));
@@ -36,12 +34,11 @@ public class CategoryService {
     }
 
 
-
     public Category getById(Long id) {
         return repository.findById(id)
                 .filter(category -> category.getRemoveDateTime() == null)
                 .orElseThrow(
-                () -> new CategoryNotFoundException(String.format("Категория с id: %s не найдена", id)));
+                        () -> new CategoryNotFoundException(String.format("Категория с id: %s не найдена", id)));
     }
 
     public Long delete(Long id) {
@@ -52,11 +49,11 @@ public class CategoryService {
     }
 
     public CategoryDTO mapToDto(Category category) {
-     return   CategoryDTO.builder()
-             .id(category.getId())
-             .name(category.getName())
-             .isPublish(category.getIsPublish())
-             .build();
+        return CategoryDTO.builder()
+                .id(category.getId())
+                .name(category.getName())
+                .isPublish(category.getIsPublish())
+                .build();
     }
 
     public List<Category> findAll() {

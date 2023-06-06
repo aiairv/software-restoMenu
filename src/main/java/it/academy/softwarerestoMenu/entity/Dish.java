@@ -1,6 +1,5 @@
 package it.academy.softwarerestoMenu.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +15,7 @@ import java.util.List;
 @Table(name = "dish")
 @Getter
 @Setter
-    public class Dish {
+public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

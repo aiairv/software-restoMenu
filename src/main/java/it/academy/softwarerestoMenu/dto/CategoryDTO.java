@@ -1,7 +1,5 @@
 package it.academy.softwarerestoMenu.dto;
 
-import it.academy.softwarerestoMenu.entity.Dish;
-import jakarta.persistence.*;
 import lombok.*;
 
 @Data

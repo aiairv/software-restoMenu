@@ -45,8 +45,8 @@ public class DishController {
         try {
             DishResponseDTO dishResponseDTO = dishService.getById(id);
             return new ResponseMessage<>(
-                   dishResponseDTO,
-                    ResultCode.SUCCESS,"Блюдо по ID найдено",
+                    dishResponseDTO,
+                    ResultCode.SUCCESS, "Блюдо по ID найдено",
                     ResultCode.SUCCESS.getHttpCode());
         } catch (Exception exception) {
             log.error("DishController: getById", exception);

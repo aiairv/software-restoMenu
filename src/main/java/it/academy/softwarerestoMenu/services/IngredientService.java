@@ -25,9 +25,9 @@ public class IngredientService {
     public Ingredient getById(Long id) {
         Ingredient ingredient = repository.findById(id).orElseThrow(null);
         if (ingredient == null) {
-            throw new IngredientNotFoundException(String.format("Ингредиент %s не найдено",ingredient.getName()));
+            throw new IngredientNotFoundException(String.format("Ингредиент %s не найдено", ingredient.getName()));
         }
-        if (ingredient.getRemoveDateTime() != null){
+        if (ingredient.getRemoveDateTime() != null) {
             throw new IngredientNotFoundException(String.format("Ингредиент %s в списке удаленных", ingredient.getName()));
         }
         return ingredient;
@@ -43,8 +43,9 @@ public class IngredientService {
     public List<Ingredient> findAll() {
         return repository.findAllByRemoveDateTimeIsNull();
     }
+
     public Ingredient restore(Long id) {
-        Ingredient ingredient= repository.findById(id)
+        Ingredient ingredient = repository.findById(id)
                 .orElseThrow(() -> new IngredientNotFoundException(String.format("Ингредиент с id %s не найден", id)));
         if (ingredient.getRemoveDateTime() == null) {
             throw new IngredientNotFoundException(String.format("Ингредиент с id %s не удален", id));

@@ -2,10 +2,9 @@ package it.academy.softwarerestoMenu.services;
 
 import it.academy.softwarerestoMenu.dto.OrderDTO;
 import it.academy.softwarerestoMenu.dto.OrderRequestDTO;
-import it.academy.softwarerestoMenu.dto.PaymentDTO;
-import it.academy.softwarerestoMenu.dto.ToppingDTO;
-import it.academy.softwarerestoMenu.entity.*;
-import it.academy.softwarerestoMenu.exceptions.CartNotFoundException;
+import it.academy.softwarerestoMenu.entity.Cart;
+import it.academy.softwarerestoMenu.entity.Order;
+import it.academy.softwarerestoMenu.entity.User;
 import it.academy.softwarerestoMenu.exceptions.OrderNotFoundException;
 import it.academy.softwarerestoMenu.exceptions.UserNotFoundException;
 import it.academy.softwarerestoMenu.mappers.OrderMapper;
@@ -64,9 +63,10 @@ public class OrderService {
 //                .dishes(order.getOrderItems())
                 .build();
     }
+
     public List<OrderDTO> convertToppingToDTOList(List<Order> orders) {
         List<OrderDTO> orderDTOS = new ArrayList<>();
-        for (Order order: orders) {
+        for (Order order : orders) {
             OrderDTO orderDTO = new OrderDTO();
             orderDTO.setUser(order.getUser());
 //            orderDTO.getOrderStatus(order.getOrderStatus())

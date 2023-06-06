@@ -91,9 +91,9 @@ public class DishService {
     public DishResponseDTO getById(Long dishId) {
         Dish dish = dishRepository.findById(dishId).orElse(null);
         if (dish == null) {
-            throw new DishNotFoundException(String.format("Блюдо %s не найдено",dish.getName()));
+            throw new DishNotFoundException(String.format("Блюдо %s не найдено", dish.getName()));
         }
-        if (dish.getRemoveDateTime() != null){
+        if (dish.getRemoveDateTime() != null) {
             throw new DishNotFoundException(String.format("Блюдо %s в списке удаленных", dish.getName()));
         }
         return mapperToDto(dish);
@@ -149,6 +149,7 @@ public class DishService {
                 .map(d -> new DishDtoForFilter(d.getName(), d.getDescription(), d.getPrice()))
                 .collect(Collectors.toList());
     }
+
     public DishResponseDTO update(Long dishId, DishDTO dishDTO) {
         Dish existingDish = dishRepository.findById(dishId).orElseThrow(() -> new DishNotFoundException("Блюдо не найдено с ID: " + dishId));
         if (existingDish.getRemoveDateTime() != null) {
