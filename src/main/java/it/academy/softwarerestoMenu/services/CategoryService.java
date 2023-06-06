@@ -1,8 +1,8 @@
 package it.academy.softwarerestoMenu.services;
 
 import it.academy.softwarerestoMenu.dto.CategoryDTO;
-import it.academy.softwarerestoMenu.entity.Category;
 import it.academy.softwarerestoMenu.exceptions.CategoryNotFoundException;
+import it.academy.softwarerestoMenu.entity.Category;
 import it.academy.softwarerestoMenu.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

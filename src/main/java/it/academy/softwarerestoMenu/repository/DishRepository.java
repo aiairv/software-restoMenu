@@ -11,22 +11,12 @@ import java.util.Optional;
 
 @Repository
 public interface DishRepository extends JpaRepository<Dish, Long> {
-    //    @Query("SELECT d.category, d FROM Dish d GROUP BY d.category")
-//    List<Map<String, Dish>> getAllDishesGroupedByCategory();
-//    @Query("SELECT new it.academy.softwarerestoMenu.dto.CategoryDTO(d.category, COUNT(d)) FROM Dish d GROUP BY d.category")
-//    List<CategoryDTO> getAllDishesGroupedByCategory();
     List<Dish> findByIsPublishTrue();
 
     List<Dish> findAllByRemoveDateTimeIsNull();
 
     Dish getDishById(Long id);
 
-
-    //    @Query("SELECT d FROM Dish d " +
-//            "WHERE (:isVegan IS NULL OR d.isVegan = :isVegan) " +
-//            "AND (:isSpecial IS NULL OR d.isSpecial = :isSpecial) " )
-////            "or (:toppingNames IS NULL OR t.name IN :toppingNames)");
-//    List<Dish> filterDishes(Boolean isVegan, Boolean isSpecial);
     @Query("SELECT d FROM Dish d WHERE d.isPublish = true AND" +
             " d.isVegan = :isVegan AND d.isSpecial = :isSpecial")
     List<Dish> findDishesByFilters(@Param("isVegan") boolean isVegan,
