@@ -64,18 +64,24 @@ public class OrderController {
                     .body(null);
         }
     }
-
-    @GetMapping("/{orderId}")
-    public ResponseEntity<OrderDTO> getOrderById(@PathVariable("orderId") Long orderId) {
+    @PostMapping("/cancel")
+    public ResponseEntity<OrderResponseDTO> cancelOrder(@RequestParam Long orderId) {
         try {
-            OrderDTO orderDTO = orderService.getOrderById(orderId);
-            return ResponseEntity.ok(orderDTO);
+            return ResponseEntity.ok(orderService.cancelOrder(orderId));
         } catch (OrderNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(null);
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    @GetMapping("/")
+    public ResponseEntity<OrderResponseDTO> getOrderById(@RequestParam Long orderId) {
+        try {
+            return ResponseEntity.ok(orderService.getOrderById(orderId));
+        } catch (OrderNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

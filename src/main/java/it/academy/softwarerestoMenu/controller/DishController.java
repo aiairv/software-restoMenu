@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/dishes")
+@RequestMapping("/api/dishes")
 @AllArgsConstructor
 @Slf4j
 public class DishController {

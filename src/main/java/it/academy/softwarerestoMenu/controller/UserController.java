@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService;
@@ -39,29 +39,10 @@ public class UserController {
                 userMapper.convertToEntity(userDTOForReg));
     }
 
-//    @PostMapping("/")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public User createUser(@RequestBody User user) {
-//        return userService.createUser(user);
-//    }
-
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 }
 
-//    @PutMapping("/{id}")
-//    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-//        if (!id.equals(user.getId())) {
-//            throw new IllegalArgumentException("Несоответствие ID");
-//        }
-//        return userService.updateUser(user);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void deleteUser(@PathVariable Long id) {
-//        userService.deleteUser(id);
-//    }
-//}
+

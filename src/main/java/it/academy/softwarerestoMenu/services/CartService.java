@@ -11,7 +11,6 @@ import it.academy.softwarerestoMenu.exceptions.CartNotFoundException;
 import it.academy.softwarerestoMenu.repository.CartRepository;
 import it.academy.softwarerestoMenu.repository.DishRepository;
 
-import it.academy.softwarerestoMenu.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CartService {
     private CartRepository cartRepository;
-    private UserRepository userRepository;
+    private UserService userService;
     private DishRepository dishRepository;
 
     public  Cart findById(Long id) {
@@ -35,7 +34,7 @@ public class CartService {
     }
 
     public ResponseCartDto addDishToCart(Long userId, Long dishId) {
-        User user = userRepository.getUserById(userId);
+        User user = userService.getUserById(userId);
 
         var cart = cartRepository.findByUserAndStatusAndRemoveDateTimeIsNull(user, CartStatus.NEW);
 
@@ -74,7 +73,7 @@ public class CartService {
 
 
     public ResponseCartDto deleteDishFromCart(Long userId, Long dishId) {
-        User user = userRepository.getUserById(userId);
+        User user = userService.getUserById(userId);
 
         var cart = cartRepository.findByUserAndStatusAndRemoveDateTimeIsNull(user, CartStatus.NEW);
 

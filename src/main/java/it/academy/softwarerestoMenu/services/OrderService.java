@@ -10,9 +10,10 @@ import it.academy.softwarerestoMenu.enums.PaymentEnum;
 import it.academy.softwarerestoMenu.enums.Place;
 import it.academy.softwarerestoMenu.exceptions.OrderNotFoundException;
 import it.academy.softwarerestoMenu.repository.OrderRepository;
-import jakarta.transaction.Transactional;
+
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -40,13 +41,13 @@ public class OrderService {
     }
 
     public OrderResponseDTO choicePayment(Long orderId, PaymentEnum paymentEnum) {
-       var order = orderRepository.findByIdAndOrderStatus(orderId, OrderStatus.NEW).orElseThrow(OrderNotFoundException::new);
-       order.setPaymentEnum(paymentEnum);
+        var order = orderRepository.findByIdAndOrderStatus(orderId, OrderStatus.NEW).orElseThrow(OrderNotFoundException::new);
+        order.setPaymentEnum(paymentEnum);
 
-       if (PaymentEnum.CASH == paymentEnum) order.setOrderStatus(OrderStatus.PAID);
-       else order.setOrderStatus(OrderStatus.PENDING);
+        if (PaymentEnum.CASH == paymentEnum) order.setOrderStatus(OrderStatus.PAID);
+        else order.setOrderStatus(OrderStatus.PENDING);
 
-       orderRepository.save(order);
+        orderRepository.save(order);
 
         return mapFromEntity(order.getId());
     }
@@ -57,7 +58,6 @@ public class OrderService {
         orderRepository.save(order);
         return mapFromEntity(order.getId());
     }
-
 
 
     OrderResponseDTO mapFromEntity(Long orderId) {
@@ -71,12 +71,19 @@ public class OrderService {
                 .build();
     }
 
-    public OrderDTO getOrderById(Long orderId) {
-        Order order = orderRepository.findById(orderId)
+
+    public OrderResponseDTO getOrderById(Long orderId) {
+        var order = orderRepository.findById(orderId)
                 .orElseThrow(OrderNotFoundException::new);
-        return null;
+        return mapFromEntity(order.getId());
     }
 
+    public OrderResponseDTO cancelOrder(Long orderId) {
+        var order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        order.setOrderStatus(OrderStatus.CANCELLED);
+        orderRepository.save(order);
+        return mapFromEntity(order.getId());
+    }
 
 }
 

@@ -2,7 +2,7 @@ package it.academy.softwarerestoMenu.entity;
 
 import it.academy.softwarerestoMenu.enums.OrderStatus;
 import it.academy.softwarerestoMenu.enums.PaymentEnum;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
