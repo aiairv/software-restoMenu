@@ -7,10 +7,10 @@ import it.academy.softwarerestoMenu.entity.Dish;
 import it.academy.softwarerestoMenu.entity.User;
 import it.academy.softwarerestoMenu.enums.CartStatus;
 import it.academy.softwarerestoMenu.exceptions.CartNotFoundException;
-import it.academy.softwarerestoMenu.exceptions.UserNotFoundException;
+
 import it.academy.softwarerestoMenu.repository.CartRepository;
 import it.academy.softwarerestoMenu.repository.DishRepository;
-import it.academy.softwarerestoMenu.repository.ToppingRepository;
+
 import it.academy.softwarerestoMenu.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
