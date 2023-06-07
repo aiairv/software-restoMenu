@@ -1,7 +1,6 @@
 package it.academy.softwarerestoMenu.controller;
 
 import it.academy.softwarerestoMenu.dto.UserDTOForAdmin;
-import it.academy.softwarerestoMenu.entity.Category;
 import it.academy.softwarerestoMenu.entity.ResponseMessage;
 import it.academy.softwarerestoMenu.enums.ResultCode;
 import it.academy.softwarerestoMenu.mappers.UserDTOForAdminMapper;
@@ -40,9 +39,10 @@ public class AdminController {
 
     @DeleteMapping("/user/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseMessage <Long> deleteUserById(@PathVariable Long id) {
-        try { return new ResponseMessage<>(
-                userService.deleteUserById(id), ResultCode.SUCCESS, "Пользователь по ID найден", ResultCode.SUCCESS.getHttpCode());
+    public ResponseMessage<Long> deleteUserById(@PathVariable Long id) {
+        try {
+            return new ResponseMessage<>(
+                    userService.deleteUserById(id), ResultCode.SUCCESS, "Пользователь по ID найден", ResultCode.SUCCESS.getHttpCode());
         } catch (Exception e) {
             log.error("AdminController: delete ", e);
             return new ResponseMessage<>(null, ResultCode.FAIL, e.getMessage(), ResultCode.FAIL.getHttpCode());

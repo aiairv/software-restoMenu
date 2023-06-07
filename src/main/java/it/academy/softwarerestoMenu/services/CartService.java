@@ -25,11 +25,11 @@ public class CartService {
     private UserService userService;
     private DishRepository dishRepository;
 
-    public  Cart findById(Long id) {
+    public Cart findById(Long id) {
         return cartRepository.findByIdAndRemoveDateTimeIsNull(id).orElseThrow(CartNotFoundException::new);
     }
 
-    public Cart save (Cart cart) {
+    public Cart save(Cart cart) {
         return cartRepository.save(cart);
     }
 

@@ -60,10 +60,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public Map<String, String> performLogin(@RequestBody @Valid AuthenticationDTO authenticationDTO) {
-        Optional<User> user = userService.findByEmail(authenticationDTO.getUsername());
+        Optional<User> user = userService.findByEmail(authenticationDTO.getEmail());
 
         UsernamePasswordAuthenticationToken authInputToken =
-                new UsernamePasswordAuthenticationToken(authenticationDTO.getUsername(),
+                new UsernamePasswordAuthenticationToken(authenticationDTO.getEmail(),
                         authenticationDTO.getPassword());
 
         try {
@@ -75,7 +75,7 @@ public class AuthController {
         if (user.isEmpty() || user.get().getStatus() != UserStatus.ACTIVE)
             return Map.of("message", "User is not active!");
 
-        String token = jwtUtil.generateToken(authenticationDTO.getUsername());
+        String token = jwtUtil.generateToken(authenticationDTO.getEmail());
         return Map.of("jwt-token", token);
     }
 

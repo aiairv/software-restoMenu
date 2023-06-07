@@ -8,6 +8,11 @@ import it.academy.softwarerestoMenu.services.CategoryService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,15 +25,26 @@ public class CategoryController {
 
     private final CategoryService service;
 
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
+
     public ResponseMessage<Category> create(@RequestBody Category category) {
         try {
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
             return new ResponseMessage<>(service.save(category), ResultCode.SUCCESS, "Категория успешно создана", ResultCode.SUCCESS.getHttpCode());
+        } catch (AuthenticationException exception) {
+            log.error("CategoryController: create ", exception);
+            return new ResponseMessage<>(null, ResultCode.FAIL, exception.getMessage(), ResultCode.FAIL.getHttpCode());
         } catch (Exception exception) {
-            log.error("CategoryController: creat ", exception);
+            log.error("CategoryController: create ", exception);
             return new ResponseMessage<>(null, ResultCode.FAIL, exception.getMessage(), ResultCode.FAIL.getHttpCode());
         }
+
+
     }
 
     @PostMapping("/{id}/restore")

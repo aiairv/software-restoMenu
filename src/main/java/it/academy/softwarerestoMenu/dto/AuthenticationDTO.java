@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 @Data
 public class AuthenticationDTO {
     @Email(message = "Не корректный email!")
-    private String username;
+    private String email;
 
     @NotEmpty(message = "Пароль не может быть пустым!")
     private String password;

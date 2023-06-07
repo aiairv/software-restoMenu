@@ -1,6 +1,18 @@
 package it.academy.softwarerestoMenu.enums;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
-public enum Role {
-    ROLE_USER,
-    ROLE_ADMIN
+@RequiredArgsConstructor
+public enum Role implements GrantedAuthority {
+
+    ROLE_ADMIN("ROLE_ADMIN"),
+    ROLE_USER("ROLE_USER");
+
+    private final String vale;
+
+    @Override
+    public String getAuthority() {
+        return vale;
+    }
+
 }
